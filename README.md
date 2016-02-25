@@ -1,6 +1,10 @@
 # SONATA WP3/WP4
 
-## SDK/SP NS Catalogue
+## SDK/SP NS/VNF Catalogue
+
+The following repository contains the SONATA CATALOGUE distributed in the next order:
+SON-SDK-CATALOGUE folder contains the SDK-NS-CATALOGUE and SDK-VNF-CATALOGUE directories for the Software Development Kit
+SON-SP-CATALOGUE folder contains the SP-NS-CATALOGUE and SP-VNF-CATALOGUE directories for the Service Platform
 
 ### Requirements
 
@@ -31,7 +35,7 @@ Which will install all the gems needed to run the SON-CATALOGUE API.
 
 ### Tests
 
-TODO: Unit-tests, intengration-tests
+TODO: Unit-tests, integration-tests
 
 ### API Documentation
 
