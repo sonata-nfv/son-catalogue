@@ -4,6 +4,7 @@ class SonataNsCatalogue < Sinatra::Application
 
 	before do
 
+		# Gatekeepr authn. code will go here for future implementation
 		# --> Gatekeeper authn. disabled
 		#if request.path_info == '/gk_credentials'
 		#	return
@@ -16,17 +17,18 @@ class SonataNsCatalogue < Sinatra::Application
 		authorized?
 	end
 
-
+	# SON-CATALOGUE PLANNING
+	#
 	#localhost/SDK-catalogue/
 	#		POST new NSD/package -> DONE
-	#		GET get all the existing services by id, name, version  -> DONE
+	#		GET get all the existing services by id, name, version
 
 	#localhost/SDK-catalogue/id/{id}
-	#		GET latest version of this service id  -> DONE
-	#		DELETE all versions of this service id  -> DONE
+	#		GET latest version of this service id
+	#		DELETE all versions of this service id
 
 	#localhost/SDK-catalogue/name/{name}
-	#		GET latest version of the service with this name (is name supposed to be unique?)  -> DONE
+	#		GET latest version of the service with this name (is name supposed to be unique?)
 
 	#localhost/SDK-catalogue/name/getbyVersion?version={x.x}
 	#		GET specific version
@@ -64,11 +66,11 @@ class SonataNsCatalogue < Sinatra::Application
 		return 200, nss_yml
 	end
 		
-		# @method post_nss
+	# @method post_nss
 	# @overload post '/network-services'
 	# Post a NS in YAML format
 	# @param [YAML] NS in YAML format
-	# Post a NS
+	# Post a NSD
 	post '/network-services' do
 		# Return if content-type is invalid
 		return 415 unless request.content_type == 'application/x-yaml'
@@ -124,7 +126,7 @@ class SonataNsCatalogue < Sinatra::Application
 			return 400, 'ERROR: Duplicated NS ID' if e.message.include? 'E11000'
 		end
 
-		print 'New NS has been added'
+		puts 'New NS has been added'
 		ns_json = new_ns.to_json
 		ns_yml = json_to_yaml(ns_json)
 		return 200, ns_yml

@@ -83,6 +83,9 @@ class SonataNsCatalogue < Sinatra::Application
 	end
 
   # Builds an HTTP link for pagination
+	#
+	# @param [Integer] offset link offset
+	# @param [Integer] limit link limit position
 	def build_http_link(offset, limit)
 		link = ''
 		# Next link

@@ -203,3 +203,8 @@
 127.0.0.1 - - [25/Feb/2016:13:09:38 +0000] "GET /network-services/name/POST-json HTTP/1.1" 404 - 0.0383
 127.0.0.1 - - [25/Feb/2016:13:13:59 +0000] "GET /network-services/name/POST-json HTTP/1.1" 404 - 0.0121
 127.0.0.1 - - [25/Feb/2016:13:14:16 +0000] "GET /network-services/name/POST-yaml HTTP/1.1" 200 1004 0.0747
+127.0.0.1 - - [26/Feb/2016:09:24:04 +0000] "POST /network-services HTTP/1.1" 200 13419 0.4333
+127.0.0.1 - - [26/Feb/2016:09:26:02 +0000] "DELETE /network-services/id//nsd HTTP/1.1" 404 543 0.0010
+127.0.0.1 - - [26/Feb/2016:09:26:03 +0000] "GET /__sinatra__/404.png HTTP/1.1" 304 - 0.0016
+127.0.0.1 - - [26/Feb/2016:09:26:24 +0000] "DELETE /network-services/id/%22/nsd%22 HTTP/1.1" 404 555 0.0025
+127.0.0.1 - - [26/Feb/2016:09:28:48 +0000] "POST /network-services HTTP/1.1" 200 13420 0.3548
