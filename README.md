@@ -3,12 +3,18 @@
 ## SDK/SP NS/VNF Catalogue
 
 The following repository contains the SONATA CATALOGUE distributed in the next order:
-SON-SDK-CATALOGUE folder contains the SDK-NS-CATALOGUE and SDK-VNF-CATALOGUE directories for the Software Development Kit
-SON-SP-CATALOGUE folder contains the SP-NS-CATALOGUE and SP-VNF-CATALOGUE directories for the Service Platform
+
+*SON-SDK-CATALOGUE folder contains the SDK-NS-CATALOGUE and SDK-VNF-CATALOGUE directories for the Software Development Kit files
+
+*SON-SP-CATALOGUE folder contains the SP-NS-CATALOGUE and SP-VNF-CATALOGUE directories for the Service Platform files
 
 ### Requirements
 
 This code has been run on Ruby 2.1.
+
+MongoDB is required, this code has been run using MongoDB version 3.2.1.
+
+A script "installation_mongodb.sh" is provided.
 
 ### Gems used
 
@@ -24,7 +30,7 @@ This code has been run on Ruby 2.1.
 
 ### Installation
 
-First, a fresh MongoDB installation is required, working on localhost:27017
+First, a fresh MongoDB installation is required, working on IP address 'localhost:27017' for development environment.
 After cloning the source code from the repository, then you can run
 
 ```sh
@@ -61,3 +67,7 @@ The following shows how to start the API server:
 ```sh
 rake start
 ```
+
+### Data model
+
+The API for the NS-CATALOGUE operates with the NSD Descriptor specified in the son-schema in YAML format as data model.
