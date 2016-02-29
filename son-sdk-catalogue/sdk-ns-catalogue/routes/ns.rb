@@ -14,7 +14,7 @@ class SonataNsCatalogue < Sinatra::Application
 			return
 		end
 
-		authorized?
+		#authorized?
 	end
 
 	# SON-CATALOGUE PLANNING
@@ -33,6 +33,26 @@ class SonataNsCatalogue < Sinatra::Application
 	#localhost/SDK-catalogue/name/getbyVersion?version={x.x}
 	#		GET specific version
 
+
+	# @method get_log
+	# @overload get '/network-services/log'
+	#	Returns contents of log file
+	# Management method to get log file of catalogue remotely
+	get '/network-services/log' do
+		filename = 'log/development.log'
+
+		# For testing purposes only
+		begin
+			txt = open(filename)
+
+		rescue
+			logger.error "Error reading log file"
+			return 500, "Error reading log file"
+		end
+
+		#return 200, nss.to_json
+		return 200, txt.read.to_s
+	end
 
 	# @method get_nss
 	# @overload get '/network-services'
@@ -74,6 +94,8 @@ class SonataNsCatalogue < Sinatra::Application
 	post '/network-services' do
 		# Return if content-type is invalid
 		return 415 unless request.content_type == 'application/x-yaml'
+
+		# Support compatibility for JSON content-type??
 		#return 415 unless request.content_type == 'application/json'
 
 		# Validate YAML format
@@ -97,9 +119,7 @@ class SonataNsCatalogue < Sinatra::Application
 		return 400, errors.to_json if errors
 
 		#logger.debug ns
-		
-		# Validate NS
-		# TODO: Maybe this should go into the NSD Validator
+
 		#return 400, 'ERROR: NS Name not found' unless ns.has_key?('name')
 		return 400, 'ERROR: NSD not found' unless ns.has_key?('nsd')
 
