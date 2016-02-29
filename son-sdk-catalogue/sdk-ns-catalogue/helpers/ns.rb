@@ -109,6 +109,7 @@ class SonataNsCatalogue < Sinatra::Application
 		link
 	end
 
+	# Extension of build_http_link
 	def build_http_link_name(offset, limit, name)
 		link = ''
 		# Next link
