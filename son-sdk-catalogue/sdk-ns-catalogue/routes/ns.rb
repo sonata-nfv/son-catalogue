@@ -1,3 +1,6 @@
+=begin
+APIDOC comment
+=end
 
 # @see NsCatalogue
 class SonataNsCatalogue < Sinatra::Application
@@ -45,9 +48,9 @@ class SonataNsCatalogue < Sinatra::Application
 		begin
 			txt = open(filename)
 
-		rescue
-			logger.error "Error reading log file"
-			return 500, "Error reading log file"
+		rescue => err
+			logger.error "Error reading log file: #{err}"
+			return 500, "Error reading log file: #{err}"
 		end
 
 		#return 200, nss.to_json
@@ -85,7 +88,79 @@ class SonataNsCatalogue < Sinatra::Application
 		#return 200, nss.to_json
 		return 200, nss_yml
 	end
-		
+
+	# @method get_nsd_external_ns_version
+	# @overload get '/network-services/:external_ns_name/:version'
+	#	Show a NS
+	#	@param [String] external_ns_name NS external Name
+	# Show a NS name
+	#	@param [Integer] external_ns_version NS version
+	# Show a NS version
+	get '/network-services/name/:external_ns_name/:version' do
+		begin
+#			ns = Ns.find( params[:external_ns_id] )
+			ns = Ns.find_by( { "nsd.name" =>  params[:external_ns_name], "nsd.version" => params[:version]})
+		rescue Mongoid::Errors::DocumentNotFound => e
+			logger.error e
+			return 404
+		end
+
+		ns_json = ns.nsd.to_json
+		ns_yml = json_to_yaml(ns_json)
+		return 200, ns_yml
+		#return 200, ns.nsd.to_json
+	end
+
+	# @method get_nsd_external_ns_last_version
+	# @overload get '/network-services/:external_ns_name/last'
+	#	Show a NS last version
+	#	@param [String] external_ns_name NS external Name
+	# Show a NS name
+	get '/network-services/name/:external_ns_name/last' do
+
+		# Search and get all items of NS by name
+		begin
+			puts 'params', params
+			# Get paginated list
+			#ns = Ns.paginate(:page => params[:offset], :limit => params[:limit])
+
+			# Build HTTP Link Header
+			#headers['Link'] = build_http_link_name(params[:offset].to_i, params[:limit], params[:external_ns_name])
+
+			#ns = Ns.distinct( "nsd.version" )#.where({ "nsd.name" =>  params[:external_ns_name]})
+			#ns = Ns.where({"nsd.name" => params[:external_ns_name]})
+			ns = Ns.where({"nsd.properties.name" => params[:external_ns_name]}).sort({"nsd.properties.version" => -1}).limit(1).first()
+			puts 'NS: ', ns
+
+			if ns == nil
+				logger.error "ERROR: NSD not found"
+				return 404
+			end
+
+		rescue Mongoid::Errors::DocumentNotFound => e
+			logger.error e
+			return 404
+		end
+
+		# Got a list, then for each item convert version field to float and get the higher
+
+		#puts 'NS size: ', ns.size.to_s
+		#puts 'version example', '4.1'.to_f
+
+		ns_json = ns.to_json
+		puts 'NS: ', ns_json
+
+		#if ns_json == 'null'
+		#	logger.error "ERROR: NSD not found"
+		#	return 404
+		#end
+		ns_yml = json_to_yaml(ns_json)
+		return 200, ns_yml
+
+		#return 200, ns.nsd.to_json
+		#return 200, ns.to_json
+	end
+
 	# @method post_nss
 	# @overload post '/network-services'
 	# Post a NS in YAML format
