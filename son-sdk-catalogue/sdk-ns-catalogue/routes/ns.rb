@@ -90,16 +90,16 @@ class SonataNsCatalogue < Sinatra::Application
 	end
 
 	# @method get_nsd_external_ns_version
-	# @overload get '/network-services/:external_ns_name/:version'
+	# @overload get '/network-services/:external_ns_name/version/:version'
 	#	Show a NS
 	#	@param [String] external_ns_name NS external Name
 	# Show a NS name
 	#	@param [Integer] external_ns_version NS version
 	# Show a NS version
-	get '/network-services/name/:external_ns_name/:version' do
+	get '/network-services/name/:external_ns_name/version/:version' do
 		begin
 #			ns = Ns.find( params[:external_ns_id] )
-			ns = Ns.find_by( { "nsd.name" =>  params[:external_ns_name], "nsd.version" => params[:version]})
+			ns = Ns.find_by( { "nsd.properties.name" =>  params[:external_ns_name], "nsd.properties.version" => params[:version]})
 		rescue Mongoid::Errors::DocumentNotFound => e
 			logger.error e
 			return 404
@@ -209,7 +209,8 @@ class SonataNsCatalogue < Sinatra::Application
 		#vnfExists(ns['nsd']['vnfds'])
 
 		begin
-			ns = Ns.find_by( { "nsd.id" =>  ns['nsd']['id'] , "nsd.version" => ns['nsd']['version'], "nsd.vendor" => ns['nsd']['vendor']})
+			ns = Ns.find_by( { "nsd.id" =>  ns['nsd']['id'] , "nsd.properties.version" => ns['nsd']['properties']['version'],
+												 "nsd.properties.vendor" => ns['nsd']['properties']['vendor']})
 			return 400, 'ERROR: Duplicated NS ID, Version or Vendor'
 		rescue Mongoid::Errors::DocumentNotFound => e
 		end
@@ -227,5 +228,23 @@ class SonataNsCatalogue < Sinatra::Application
 		return 200, ns_yml
 		#return 200, new_ns.to_json
 	end
+
+	# @method delete_nsd_external_ns_id
+	# @overload delete '/network-service/:external_ns_id'
+	#	Delete a NS by its ID
+	#	@param [Integer] external_ns_id NS external ID
+	# Delete a NS
+	delete '/network-services/id/:external_ns_id' do
+		#logger.error params[:external_ns_id]
+		begin
+			#ns = Ns.find( params[:external_ns_id] )
+			ns = Ns.find_by( { "nsd.id" =>  params[:external_ns_id]})
+		rescue Mongoid::Errors::DocumentNotFound => e
+			return 404,'ERROR: Operation failed'
+		end
+		ns.destroy
+		return 200, 'OK: NSD removed'
+	end
+
 
 end
