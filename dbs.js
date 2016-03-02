@@ -4,9 +4,11 @@
  * with the next command from prompt:
  * sudo mongo --nodb dbs.js
  *
- * If the MongoDB is not found in localhost, then change "localhost:27017"
- * accordingly from 'connect' instructions to the "IP_address:port"
- * where MongoDB is located.
+ * If the MongoDB is not found in localhost or is located on a different
+ * port, then change "localhost:27017" accordingly from each 'connect'
+ * command to the "ip_address:port" where MongoDB is installed/located.
+ * Mongo Shell is required on local machine to apply script on remote a
+ * remote database.
  */
 
 db = connect("localhost:27017/ns_catalogue");

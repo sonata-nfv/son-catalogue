@@ -1,20 +1,22 @@
 # SONATA WP3/WP4
 
-## SDK/SP NS/VNF Catalogue
+## SDK/SP NS - VNF - Package Descriptors Catalogues
 
-The following repository contains the SONATA CATALOGUE distributed in the next order:
+The following repository contains the SONATA CATALOGUE (son-catalogue component) distributed in the next structure:
 
-*SON-SDK-CATALOGUE folder contains the SDK-NS-CATALOGUE and SDK-VNF-CATALOGUE directories for the Software Development Kit files
+* SON-SDK-CATALOGUE folder contains the SDK-NS-CATALOGUE and SDK-VNF-CATALOGUE directories for the Software Development Kit files.
 
-*SON-SP-CATALOGUE folder contains the SP-NS-CATALOGUE and SP-VNF-CATALOGUE directories for the Service Platform files
+* SON-SP-CATALOGUE folder contains the SP-NS-CATALOGUE and SP-VNF-CATALOGUE directories for the Service Platform files.
 
 ### Requirements
+
+It is recommended to use Ubuntu 14.04.4 LTS (Trusty Tahr).
 
 This code has been run on Ruby 2.1.
 
 MongoDB is required, this code has been run using MongoDB version 3.2.1.
 
-A script "installation_mongodb.sh" is provided.
+Root folder provides a script "installation_mongodb.sh" to install and set up MongoDB.
 
 ### Gems used
 
@@ -30,14 +32,20 @@ A script "installation_mongodb.sh" is provided.
 
 ### Installation
 
-First, a fresh MongoDB installation is required, working on IP address 'localhost:27017' for development environment.
-After cloning the source code from the repository, then you can run
+Before installing the Catalogues API from source code, it is recommended to install a fresh MongoDB database. It can be done
+with the "installation_mongodb.sh" script provided in the root folder. This script installs MongoDB and uses the "dbs.js" script
+to build a database structure in the MongoDB for each catalogue. The default IP address for local development environment is
+'localhost:27017'. However, if the MongoDB is already installed, "dbs.js" script can be used standalone, just follow the
+instructions inside the file. If the MongoDB is found remotely, then the "dbs.js" script needs to be changed according to
+the IP and Port address of the MongoDB.
+
+For the Catalogues, after cloning the source code from the repository, you can run:
 
 ```sh
 bundle install
 ```
 
-Which will install all the gems needed to run the SON-CATALOGUE API.
+It will install all the gems needed to run the SON-CATALOGUE API.
 
 ### Tests
 
@@ -52,13 +60,13 @@ Currently, the API is documented with yardoc and can be built with a rake task:
 rake yard
 ```
 
-from here you can use the yard server to browse the docs from the source root:
+From here you can use the yard server to browse the docs from the source root:
 
 ```sh
 yard server
 ```
 
-and they can be viewed from http://localhost:8808/
+And they can be viewed from http://localhost:8808/
 
 ### Run Server
 
@@ -70,4 +78,5 @@ rake start
 
 ### Data model
 
-The API for the NS-CATALOGUE operates with the NSD Descriptor specified in the son-schema in YAML format as data model.
+The API current version for the NS-CATALOGUE supports the NSD Descriptor specified in the 'son-schema' repository in YAML format as data model.
+Next work is to feature support for VNF Descriptor and Package Descriptor for each catalogue type.
