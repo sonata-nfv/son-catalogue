@@ -32,12 +32,7 @@ Root folder provides a script "installation_mongodb.sh" to install and set up Mo
 
 ### Installation
 
-Before installing the Catalogues API from source code, it is recommended to install a fresh MongoDB database. It can be done
-with the "installation_mongodb.sh" script provided in the root folder. This script installs MongoDB and uses the "dbs.js" script
-to build a database structure in the MongoDB for each catalogue. The default IP address for local development environment is
-'localhost:27017'. However, if the MongoDB is already installed, "dbs.js" script can be used standalone, just follow the
-instructions inside the file. If the MongoDB is found remotely, then the "dbs.js" script needs to be changed according to
-the IP and Port address of the MongoDB.
+Before installing the Catalogues API from source code, it is recommended to install a fresh MongoDB database. It can be done with the "installation_mongodb.sh" script provided in the root folder. This script installs MongoDB and uses the "dbs.js" scriptto build a database structure in the MongoDB for each catalogue. The default IP address for local development environment is 'localhost:27017'. However, if the MongoDB is already installed, "dbs.js" script can be used standalone, just follow the instructions inside the file. If the MongoDB is found remotely, then the "dbs.js" script needs to be changed according to the IP and Port address of the MongoDB.
 
 For the Catalogues, after cloning the source code from the repository, you can run:
 
