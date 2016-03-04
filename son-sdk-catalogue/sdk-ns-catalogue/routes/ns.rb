@@ -23,7 +23,7 @@ class SonataNsCatalogue < Sinatra::Application
 	# SON-CATALOGUE PLANNING
 	#
 	#localhost/SDK-catalogue/
-	#		POST new NSD/package -> DONE
+	#		POST new NSD/package
 	#		GET get all the existing services by id, name, version
 
 	#localhost/SDK-catalogue/id/{id}
@@ -87,6 +87,27 @@ class SonataNsCatalogue < Sinatra::Application
 
 		#return 200, nss.to_json
 		return 200, nss_yml
+	end
+
+	# @method get_ns_external_ns_id
+	# @overload get '/network-services/id/:external_ns_id'
+	#	Show a NS
+	#	@param [Integer] external_ns_id NS external ID
+	# Show a NS
+	get '/network-services/id/:external_ns_id' do
+		begin
+#			ns = Ns.find( params[:external_ns_id] )
+			ns = Ns.find_by( { "nsd.id" =>  params[:external_ns_id]})
+		rescue Mongoid::Errors::DocumentNotFound => e
+			logger.error e
+			return 404
+		end
+
+		ns_json = ns.nsd.to_json
+		#puts 'NSS: ', nss_json
+		ns_yml = json_to_yaml(ns_json)
+		return 200, ns_yml
+		#return 200, ns.nsd.to_json
 	end
 
 	# @method get_nsd_external_ns_version
@@ -194,7 +215,7 @@ class SonataNsCatalogue < Sinatra::Application
 		return 400, errors.to_json if errors
 
 		#logger.debug ns
-
+		# Validate NS
 		#return 400, 'ERROR: NS Name not found' unless ns.has_key?('name')
 		return 400, 'ERROR: NSD not found' unless ns.has_key?('nsd')
 
