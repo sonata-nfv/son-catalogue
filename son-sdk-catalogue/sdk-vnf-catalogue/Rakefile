@@ -1,4 +1,5 @@
 require 'yard'
+require 'yaml'
 require 'rspec/core/rake_task'
 
 RSpec::Core::RakeTask.new :specs do |task|
@@ -9,14 +10,14 @@ task :default => ['specs']
 
 desc 'Start the service'
 task :start do
-  puts 'SON-CATALOGUE NS STARTING...'
+	puts 'SON-CATALOGUE VNF STARTING...'
 	conf = File.expand_path('config.ru', File.dirname(__FILE__))
 	conf2 = File.expand_path('config/config.yml', File.dirname(__FILE__))
 	exec("thin -C #{conf2} -R #{conf} --debug start")
 end
 
 YARD::Rake::YardocTask.new do |t|
-	t.files = ['main.rb', 'helpers/ns.rb', 'routes/ns.rb']
+	t.files = ['main.rb', 'helpers/vnf.rb', 'routes/vnf.rb', 'models/vnf.rb']
 end
 
 namespace :db do
@@ -24,4 +25,3 @@ namespace :db do
 		require './main'
 	end
 end
-
