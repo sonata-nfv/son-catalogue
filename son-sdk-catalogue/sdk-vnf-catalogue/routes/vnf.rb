@@ -97,7 +97,7 @@ class SonataVnfCatalogue < Sinatra::Application
 	end
 
 	# @method get_vnfs_id
-	# @overload get '/vnfs/:id'
+	# @overload get '/vnfs/id/:id'
 	#	Show a VNF
 	#	@param [String] id VNF ID
 	# Show a VNF
