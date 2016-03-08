@@ -15,11 +15,14 @@ class Vnf
 	include Mongoid::Document
 	include Mongoid::Timestamps
 	include Mongoid::Pagination
-	include Mongoid::Versioning
+	#include Mongoid::Versioning
+  include Mongoid::Attributes::Dynamic
 
-	field :name, type: String
+  field :vnf_group, type: String
+	field :vnf_name, type: String
+  field :vnf_version, type: String
 	#field :vnf_manager, type: String # <- Not applicable yet
-	field :vnfd, type: Hash
+	#field :vnfd, type: Hash
 
-	validates :name, :vnfd, :presence => true
+	validates :vnf_name, :vnf_version, :presence => true
 end

@@ -122,7 +122,17 @@ class SonataVnfCatalogue < Sinatra::Application
 				'purpose' => 'List all VNFs'
 			},
 			{
-				'uri' => '/vnfs/{external_vnf_id}',
+					'uri' => '/vnfs/name/{external_vnf_name}/last',
+					'method' => 'GET',
+					'purpose' => 'List a specific VNF'
+			},
+			{
+					'uri' => '/vnfs/name/{external_vnf_name}/version/{external_vnf_version}',
+					'method' => 'GET',
+					'purpose' => 'List a specific VNF'
+			},
+			{
+				'uri' => '/vnfs/id/{external_vnf_id}',
 				'method' => 'GET',
 				'purpose' => 'List a specific VNF'
 			},
@@ -132,12 +142,12 @@ class SonataVnfCatalogue < Sinatra::Application
 				'purpose' => 'Store a new VNF'
 			},
 			{
-				'uri' => '/vnfs/{external_vnf_id}',
+				'uri' => '/vnfs/id/{external_vnf_id}',
 				'method' => 'PUT',
 				'purpose' => 'Update a stored VNF'
 			},
 			{
-				'uri' => '/vnfs/{external_vnf_id}',
+				'uri' => '/vnfs/id/{external_vnf_id}',
 				'method' => 'DELETE',
 				'purpose' => 'Delete a specific VNF'
 			}
