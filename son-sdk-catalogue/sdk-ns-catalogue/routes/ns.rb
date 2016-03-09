@@ -23,7 +23,7 @@ class SonataNsCatalogue < Sinatra::Application
 	# SON-CATALOGUE PLANNING
 	#
 	#localhost/SDK-catalogue/
-	#		POST new NSD/package -> DONE
+	#		POST new NSD/package
 	#		GET get all the existing services by id, name, version
 
 	#localhost/SDK-catalogue/id/{id}
@@ -55,6 +55,14 @@ class SonataNsCatalogue < Sinatra::Application
 
 		#return 200, nss.to_json
 		return 200, txt.read.to_s
+	end
+
+	# @method get_root
+	# @overload get '/'
+	#       Get all available interfaces
+	# Get all interfaces
+	get '/' do
+		halt 200, interfaces_list.to_yaml
 	end
 
 	# @method get_nss
@@ -89,6 +97,27 @@ class SonataNsCatalogue < Sinatra::Application
 		return 200, nss_yml
 	end
 
+	# @method get_ns_external_ns_id
+	# @overload get '/network-services/id/:external_ns_id'
+	#	Show a NS
+	#	@param [Integer] external_ns_id NS external ID
+	# Show a NS
+	get '/network-services/id/:external_ns_id' do
+		begin
+			ns = Ns.find( params[:external_ns_id] )
+			#ns = Ns.find_by( { "nsd.id" =>  params[:external_ns_id]})
+		rescue Mongoid::Errors::DocumentNotFound => e
+			logger.error e
+			return 404
+		end
+
+		ns_json = ns.to_json
+		#puts 'NSS: ', nss_json
+		ns_yml = json_to_yaml(ns_json)
+		return 200, ns_yml
+		#return 200, ns.nsd.to_json
+	end
+
 	# @method get_nsd_external_ns_version
 	# @overload get '/network-services/:external_ns_name/version/:version'
 	#	Show a NS
@@ -99,13 +128,13 @@ class SonataNsCatalogue < Sinatra::Application
 	get '/network-services/name/:external_ns_name/version/:version' do
 		begin
 #			ns = Ns.find( params[:external_ns_id] )
-			ns = Ns.find_by( { "nsd.properties.name" =>  params[:external_ns_name], "nsd.properties.version" => params[:version]})
+			ns = Ns.find_by( { "ns_name" =>  params[:external_ns_name], "ns_version" => params[:version]})
 		rescue Mongoid::Errors::DocumentNotFound => e
 			logger.error e
 			return 404
 		end
 
-		ns_json = ns.nsd.to_json
+		ns_json = ns.to_json
 		ns_yml = json_to_yaml(ns_json)
 		return 200, ns_yml
 		#return 200, ns.nsd.to_json
@@ -129,7 +158,7 @@ class SonataNsCatalogue < Sinatra::Application
 
 			#ns = Ns.distinct( "nsd.version" )#.where({ "nsd.name" =>  params[:external_ns_name]})
 			#ns = Ns.where({"nsd.name" => params[:external_ns_name]})
-			ns = Ns.where({"nsd.properties.name" => params[:external_ns_name]}).sort({"nsd.properties.version" => -1}).limit(1).first()
+			ns = Ns.where({"ns_name" => params[:external_ns_name]}).sort({"ns_version" => -1}).limit(1).first()
 			puts 'NS: ', ns
 
 			if ns == nil
@@ -194,9 +223,14 @@ class SonataNsCatalogue < Sinatra::Application
 		return 400, errors.to_json if errors
 
 		#logger.debug ns
-
+		# Validate NS
 		#return 400, 'ERROR: NS Name not found' unless ns.has_key?('name')
-		return 400, 'ERROR: NSD not found' unless ns.has_key?('nsd')
+		#return 400, 'ERROR: NSD not found' unless ns.has_key?('nsd')
+
+		return 400, 'ERROR: NS Name not found' unless ns.has_key?('ns_name')
+		return 400, 'ERROR: NS Group not found' unless ns.has_key?('ns_group')
+		return 400, 'ERROR: NS Version not found' unless ns.has_key?('ns_version')
+
 
 		# --> Validation disabled
 		# Validate NSD
@@ -209,9 +243,8 @@ class SonataNsCatalogue < Sinatra::Application
 		#vnfExists(ns['nsd']['vnfds'])
 
 		begin
-			ns = Ns.find_by( { "nsd.id" =>  ns['nsd']['id'] , "nsd.properties.version" => ns['nsd']['properties']['version'],
-												 "nsd.properties.vendor" => ns['nsd']['properties']['vendor']})
-			return 400, 'ERROR: Duplicated NS ID, Version or Vendor'
+			ns = Ns.find_by( { "ns_name" =>  ns['ns_name'] , "ns_version" => ns['ns_version']})
+			return 400, 'ERROR: Duplicated NS Name and Version'
 		rescue Mongoid::Errors::DocumentNotFound => e
 		end
 
@@ -238,7 +271,7 @@ class SonataNsCatalogue < Sinatra::Application
 		#logger.error params[:external_ns_id]
 		begin
 			#ns = Ns.find( params[:external_ns_id] )
-			ns = Ns.find_by( { "nsd.id" =>  params[:external_ns_id]})
+			ns = Ns.find_by( params[:external_ns_id] )
 		rescue Mongoid::Errors::DocumentNotFound => e
 			return 404,'ERROR: Operation failed'
 		end

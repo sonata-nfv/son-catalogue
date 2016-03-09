@@ -132,5 +132,63 @@ class SonataNsCatalogue < Sinatra::Application
 		end
 		link
 	end
-	
+
+	# Method which lists all available interfaces
+	#
+	# @return [Array] an array of hashes containing all interfaces
+	def interfaces_list
+		[
+				{
+						'uri' => '/',
+						'method' => 'GET',
+						'purpose' => 'REST API Structure and Capability Discovery'
+				},
+				{
+						'uri' => '/network-services',
+						'method' => 'GET',
+						'purpose' => 'List all NSs'
+				},
+				{
+						'uri' => '/network-services/log',
+						'method' => 'GET',
+						'purpose' => 'List stored log entries'
+				},
+				{
+						'uri' => '/network-services/id/{external_ns_id}',
+						'method' => 'GET',
+						'purpose' => 'List a specific NS'
+				},
+				{
+						'uri' => '/network-services/name/{external_ns_name}',
+						'method' => 'GET',
+						'purpose' => 'List a specific NS or specifics NS with common name'
+				},
+				{
+						'uri' => '/network-services/name/{external_ns_name}/version/{external_ns_version}',
+						'method' => 'GET',
+						'purpose' => 'List a specific NS by name and version'
+				},
+				{
+						'uri' => '/network-services/name/{external_ns_name}/last',
+						'method' => 'GET',
+						'purpose' => 'List last version of specific NS by name'
+				},
+				{
+						'uri' => '/network-services',
+						'method' => 'POST',
+						'purpose' => 'Store a new NS'
+				},
+				{
+						'uri' => '/network-services/{external_ns_id}',
+						'method' => 'PUT',
+						'purpose' => 'Update a stored NS'
+				},
+				{
+						'uri' => '/network-services/{external_ns_id}',
+						'method' => 'DELETE',
+						'purpose' => 'Delete a specific NS'
+				}
+		]
+	end
+
 end
