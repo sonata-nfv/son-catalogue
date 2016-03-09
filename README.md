@@ -1,4 +1,4 @@
-# SONATA WP3/WP4
+	# SONATA WP3/WP4.
 
 ## SDK/SP NS - VNF - Package Descriptors Catalogues
 
