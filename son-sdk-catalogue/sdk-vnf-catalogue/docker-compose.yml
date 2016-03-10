@@ -1,0 +1,39 @@
+vnf_catalogue:
+  image: registry.sonata-nfv.eu:5000/sdk-vnf-catalogue
+  links:
+   - mongo
+  ports:
+    - "4570:4569"
+  restart: always
+
+vnf_catalogue_doc:
+  image: registry.sonata-nfv.eu:5000/sdk-vnf-catalogue
+  ports:
+    - "8810:8808"
+  command: [rake,yard]
+  command: [yard, server, -B, 0.0.0.0]
+  restart: always
+
+mongodata:
+  image: mongo:3.0.4
+  volumes:
+    - /data/db
+  command: --break-mongo
+
+mongo:
+  image: mongo:3.0.4
+  volumes_from:
+    - mongodata
+  ports:
+    - "27019:27017"
+  command: --smallfiles --rest
+  restart: always
+
+mongoexpress:
+  image: knickers/mongo-express
+  links:
+    - mongo:mongo
+  ports:
+    - "8083:8081"
+  restart: always
+
