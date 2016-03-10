@@ -1,13 +1,13 @@
-ns-instances:
-  image: registry.sonata-nfv.eu:5000/son-catalogue/son-sdk-catalogue
+ns-catalogue:
+  image: registry.sonata-nfv.eu:5000/sdk-ns-catalogue
   links:
    - mongo
   ports:
     - "4012:4011"
   restart: always
 
-ns-instances_doc:
-  image: registry.sonata-nfv.eu:5000/son-catalogue/son-sdk-catalogue
+ns-catalogue_doc:
+  image: registry.sonata-nfv.eu:5000/sdk-ns-catalogue
   ports:
     - "8809:8808"
   command: [rake,yard]
