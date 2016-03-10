@@ -11,3 +11,4 @@ EXPOSE 4567
 WORKDIR /app
 CMD ["rake", "start"]
 
+

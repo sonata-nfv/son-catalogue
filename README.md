@@ -1,4 +1,4 @@
-	# SONATA WP3/WP4
+# SONATA WP3/WP4
 
 ## SDK/SP NS - VNF - Package Descriptors Catalogues
 
@@ -97,4 +97,5 @@ The following lead developers are responsible for this repository:
 * Shuaib Siddiqui (shuaibsiddiqui)
 
 * Daniel Guija (dang03)
+
 
