@@ -1,12 +1,10 @@
-# SONATA WP3/WP4
+# SONATA WP3
 
-## SDK/SP NS - VNF - Package Descriptors Catalogues
+## SDK NS - VNF - Package Descriptors Catalogues
 
-The following repository contains the SONATA CATALOGUE (son-catalogue component) distributed in the next structure:
+The following repository contains the SONATA SDK CATALOGUE (son-catalogue component for sdk) distributed in the next structure:
 
 * SON-SDK-CATALOGUE folder contains the SDK-NS-CATALOGUE and SDK-VNF-CATALOGUE directories for the Software Development Kit files.
-
-* SON-SP-CATALOGUE folder contains the SP-NS-CATALOGUE and SP-VNF-CATALOGUE directories for the Service Platform files.
 
 ### Requirements
 
