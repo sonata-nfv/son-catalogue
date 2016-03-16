@@ -1,5 +1,7 @@
 # SONATA WP3
 
+### WORK IN PROGRESS - NS/VNF APIs ARE BEING MERGED ###
+
 ## SDK NS - VNF - Package Descriptors Catalogues
 
 The following repository contains the SONATA SDK CATALOGUE (son-catalogue component for sdk) distributed in the next structure:
