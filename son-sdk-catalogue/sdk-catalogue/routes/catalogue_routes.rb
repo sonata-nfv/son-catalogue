@@ -307,7 +307,7 @@ class SonataCatalogue < Sinatra::Application
 		# Save to DB
 		begin
 			# Generate the IDENTIFIER(group.name.version) for the descriptor
-			#ns['_id'] = GenerateIdentifier()
+			ns['_id'] = ns['ns_group'].to_s + '.' + ns['ns_name'].to_s + '.' + ns['ns_version'].to_s
 			new_ns = Ns.create!(ns)
 		rescue Moped::Errors::OperationFailure => e
 			return 400, 'ERROR: Duplicated NS ID' if e.message.include? 'E11000'
@@ -375,8 +375,8 @@ class SonataCatalogue < Sinatra::Application
 		#new_id = new_ns['id'].to_i + prng.rand(1000)
 		#new_ns['id'] = new_id.to_s
 		#new_ns['id'] = new_ns['id'].to_s + prng.rand(1000).to_s # Without unique IDs
-		new_ns['_id'] = new_ns['_id'].to_s + prng.rand(1000).to_s	# Unique IDs per NSD entries
-		#new_ns['_id'] = GenerateIdentifier	# Unique IDs per NSD entries
+		#new_ns['_id'] = new_ns['_id'].to_s + prng.rand(1000).to_s	# Unique IDs per NSD entries
+		new_ns['_id'] = ns['ns_group'].to_s + '.' + ns['ns_name'].to_s + '.' + ns['ns_version'].to_s	# Unique IDs per NSD entries
 		nsd = new_ns # TODO: Avoid having multiple 'nsd' fields containers
 
 
@@ -620,8 +620,8 @@ class SonataCatalogue < Sinatra::Application
 		#end
 
 		begin
-			vnf = Vnf.find_by( {"vnf_name"=>vnf['vnf_name'], "vnf_version"=>vnf['vnf_version']} )
-			return 400, 'ERROR: Duplicated VNF Name and Version'
+			vnf = Vnf.find_by( {"vnf_name"=>vnf['vnf_name'], "vnf_group"=>vnf['vnf_group'], "vnf_version"=>vnf['vnf_version']} )
+			return 400, 'ERROR: Duplicated VNF Name, Group and Version'
 		rescue Mongoid::Errors::DocumentNotFound => e
 		end
 		# Check if VNFD has an ID (it should not) and if it already exists in the catalogue
@@ -634,7 +634,7 @@ class SonataCatalogue < Sinatra::Application
 		# Save to BD
 		begin
 			# Generate the group.name.version ID for the descriptor
-			#vnf['_id'] = GenerateIdentifier()
+			vnf['_id'] = vnf['vnf_group'].to_s + '.' + vnf['vnf_name'].to_s + '.' + vnf['vnf_version'].to_s
 			new_vnf = Vnf.create!(vnf)
 		rescue Moped::Errors::OperationFailure => e
 			halt 400, 'ERROR: Duplicated VNF ID' if e.message.include? 'E11000'
@@ -707,9 +707,9 @@ class SonataCatalogue < Sinatra::Application
 		prng = Random.new
 		puts 'Updating...'
 
-		new_vnf['_id'] = new_vnf['_id'].to_s + prng.rand(1000).to_s	# Unique IDs per NSD entries
+		#new_vnf['_id'] = new_vnf['_id'].to_s + prng.rand(1000).to_s	# Unique IDs per NSD entries
 		# Update the group.name.version ID for the descriptor
-		#vnf['_id'] = GenerateIdentifier()
+		new_vnf['_id'] = new_vnf['vnf_group'].to_s + '.' + new_vnf['vnf_name'].to_s + '.' + new_vnf['vnf_version'].to_s
 		vnfd = new_vnf # TODO: Avoid having multiple 'vnfd' fields containers
 
 		begin

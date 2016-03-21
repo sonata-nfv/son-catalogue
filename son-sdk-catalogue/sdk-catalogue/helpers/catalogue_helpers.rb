@@ -142,8 +142,10 @@ class SonataCatalogue < Sinatra::Application
 
 		# TODO: link host and port should be configurable (load form config file)
 		address, port = read_config
+		#puts "configs", address.to_s, port.to_i
+		#puts "vars", next_offset.to_s, limit.to_s
 
-		link << '<' + address.to_s + ':' + port.to_i + '/vnfs?offset=' + next_offset.to_s + '&limit=' + limit.to_s + '>; rel="next"' unless next_vnfs.empty?
+		link << '<' + address.to_s + ':' + port.to_s + '/vnfs?offset=' + next_offset.to_s + '&limit=' + limit.to_s + '>; rel="next"' unless next_vnfs.empty?
 
 		unless offset == 1
 			# Previous link
@@ -152,7 +154,7 @@ class SonataCatalogue < Sinatra::Application
 			unless previous_vnfs.empty?
 				link << ', ' unless next_vnfs.empty?
 				# TODO: link host and port should be configurable (load form config file)
-				link << '<' + address.to_s + ':' + port.to_i + '/vnfs?offset=' + previous_offset.to_s + '&limit=' + limit.to_s + '>; rel="last"'
+				link << '<' + address.to_s + ':' + port.to_s + '/vnfs?offset=' + previous_offset.to_s + '&limit=' + limit.to_s + '>; rel="last"'
 			end
 		end
 		link
