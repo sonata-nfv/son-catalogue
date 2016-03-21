@@ -11,12 +11,12 @@
  * remote database.
  */
 
-db = connect("localhost:27017/ns_catalogue");
+db = connect("mongo:27017/ns_catalogue");
 db.createCollection("ns");
 
-db = connect("localhost:27017/vnf_catalogue");
+db = connect("mongo:27017/vnf_catalogue");
 db.createCollection("vnfs");
 
-db = connect("localhost:27017/pd_catalogue");
+db = connect("mongo:27017/pd_catalogue");
 db.createCollection("pd");
 

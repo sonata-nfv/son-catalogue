@@ -8,6 +8,20 @@ development:
       user: username
       password: password
 
+    ns_db:
+      database: ns_catalogue
+      hosts:
+      - 127.0.0.1:27017
+      user:
+      password:
+
+    vnf_db:
+      database: vnf_catalogue
+      hosts:
+      - 127.0.0.1:27017
+      user:
+      password:
+
 test:
   sessions:
     default:
