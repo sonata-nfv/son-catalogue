@@ -112,7 +112,7 @@ class SonataCatalogue < Sinatra::Application
 		address, port = read_config
 
 		begin
-			link << '<' + address.to_s + ':' + port.to_i + '/network-services?offset=' + next_offset.to_s + '&limit=' + limit.to_s + '>; rel="next"' unless next_nss.empty?
+			link << '<' + address.to_s + ':' + port.to_s + '/network-services?offset=' + next_offset.to_s + '&limit=' + limit.to_s + '>; rel="next"' unless next_nss.empty?
 		rescue
 			logger.error "Error Establishing a Database Connection"
 		end
@@ -123,7 +123,7 @@ class SonataCatalogue < Sinatra::Application
 			previous_nss = Ns.paginate(:page => previous_offset, :limit => limit)
 			unless previous_nss.empty?
 				link << ', ' unless next_nss.empty?
-				link << '<' + address.to_s + ':' + port.to_i + '/network-services?offset=' + previous_offset.to_s + '&limit=' + limit.to_s + '>; rel="last"'
+				link << '<' + address.to_s + ':' + port.to_s + '/network-services?offset=' + previous_offset.to_s + '&limit=' + limit.to_s + '>; rel="last"'
 			end
 		end
 		link
@@ -169,7 +169,7 @@ class SonataCatalogue < Sinatra::Application
 		address, port = read_config
 
 		begin
-			link << '<' + address.to_s + ':' + port.to_i + '/network-services/name/' + name.to_s + '?offset=' + next_offset.to_s + '&limit=' + limit.to_s + '>; rel="next"' unless next_nss.empty?
+			link << '<' + address.to_s + ':' + port.to_s + '/network-services/name/' + name.to_s + '?offset=' + next_offset.to_s + '&limit=' + limit.to_s + '>; rel="next"' unless next_nss.empty?
 		rescue
 			logger.error "Error Establishing a Database Connection"
 		end
@@ -180,7 +180,7 @@ class SonataCatalogue < Sinatra::Application
 			previous_nss = Ns.paginate(:page => previous_offset, :limit => limit)
 			unless previous_nss.empty?
 				link << ', ' unless next_nss.empty?
-				link << '<' + address.to_s + ':' + port.to_i + '/network-services/name/' + name.to_s + '?offset=' + previous_offset.to_s + '&limit=' + limit.to_s + '>; rel="last"'
+				link << '<' + address.to_s + ':' + port.to_s + '/network-services/name/' + name.to_s + '?offset=' + previous_offset.to_s + '&limit=' + limit.to_s + '>; rel="last"'
 			end
 		end
 		link
