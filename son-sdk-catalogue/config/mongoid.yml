@@ -11,16 +11,16 @@ development:
     ns_db:
       database: ns_catalogue
       hosts:
-      #- mongo:27017
-      - 127.0.0.1:27017
+      - mongo:27017
+      #- 127.0.0.1:27017
       user:
       password:
 
     vnf_db:
       database: vnf_catalogue
       hosts:
-      #- mongo:27017
-      - 127.0.0.1:27017
+      - mongo:27017
+      #- 127.0.0.1:27017
       user:
       password:
 
