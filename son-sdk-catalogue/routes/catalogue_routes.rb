@@ -84,12 +84,13 @@ class SonataCatalogue < Sinatra::Application
 
 		# Get paginated list
 		nss = Ns.paginate(:page => params[:offset], :limit => params[:limit])
+		#nss = Ns.all()
 
 		# Build HTTP Link Header
 		headers['Link'] = build_http_link_ns(params[:offset].to_i, params[:limit])
 
 		begin
-			nss_json = nss.to_json
+			nss_json = nss.to_json # to remove _id field from documents (:except => :_id)
 			#puts 'NSS: ', nss_json
 			nss_yml = json_to_yaml(nss_json)
 			#puts 'NSS: ', nss_yml
@@ -110,7 +111,7 @@ class SonataCatalogue < Sinatra::Application
 	# Show a NS by internal ID
 	get '/network-services/id/:sdk_ns_id' do
 		begin
-			ns = Ns.find(params[:sdk_ns_id] )
+			ns = Ns.find(params[:sdk_ns_id] ) # no ID fields {_id: false}
 			#ns = Ns.find_by( { "nsd.id" =>  params[:external_ns_id]})
 		rescue Mongoid::Errors::DocumentNotFound => e
 			logger.error e
