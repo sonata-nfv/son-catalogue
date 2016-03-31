@@ -66,7 +66,11 @@ class SonataCatalogue < Sinatra::Application
 	#       Get all available interfaces
 	# Get all interfaces
 	get '/' do
-		halt 200, interfaces_list.to_yaml
+		if request.content_type == 'application/x-yaml'
+			halt 200, interfaces_list.to_yaml
+		elsif request.content_type == 'application/json'
+			halt 200, interfaces_list.to_json
+		end
 	end
 
 
@@ -92,15 +96,16 @@ class SonataCatalogue < Sinatra::Application
 		begin
 			nss_json = nss.to_json # to remove _id field from documents (:except => :_id)
 			#puts 'NSS: ', nss_json
-			nss_yml = json_to_yaml(nss_json)
-			#puts 'NSS: ', nss_yml
+			if request.content_type == 'application/json'
+				return 200, nss_json
+			elsif request.content_type == 'application/x-yaml'
+				nss_yml = json_to_yaml(nss_json)
+				return 200, nss_yml
+			end
 		rescue
 			logger.error "Error Establishing a Database Connection"
 			return 500, "Error Establishing a Database Connection"
 		end
-
-		#return 200, nss.to_json
-		return 200, nss_yml
 	end
 
 
@@ -120,9 +125,13 @@ class SonataCatalogue < Sinatra::Application
 
 		ns_json = ns.to_json
 		#puts 'NSS: ', nss_json
-		ns_yml = json_to_yaml(ns_json)
-		return 200, ns_yml
 		#return 200, ns.nsd.to_json
+		if request.content_type == 'application/json'
+			return 200, ns_json
+		elsif request.content_type == 'application/x-yaml'
+			ns_yml = json_to_yaml(ns_json)
+			return 200, ns_yml
+		end
 	end
 
 
@@ -161,9 +170,13 @@ class SonataCatalogue < Sinatra::Application
 			return 404
 		end
 		ns_json = ns.to_json
+		if request.content_type == 'application/json'
+			return 200, ns_json
+		elsif request.content_type == 'application/x-yaml'
+			ns_yml = json_to_yaml(ns_json)
+			return 200, ns_yml
+		end
 		#puts 'NS: ', ns_json[0]
-		ns_yml = json_to_yaml(ns_json)
-		return 200, ns_yml
 	end
 
 
@@ -183,8 +196,12 @@ class SonataCatalogue < Sinatra::Application
 		end
 
 		ns_json = ns.to_json
-		ns_yml = json_to_yaml(ns_json)
-		return 200, ns_yml
+		if request.content_type == 'application/json'
+			return 200, ns_json
+		elsif request.content_type == 'application/x-yaml'
+			ns_yml = json_to_yaml(ns_json)
+			return 200, ns_yml
+		end
 		#return 200, ns.nsd.to_json
 	end
 
@@ -229,12 +246,17 @@ class SonataCatalogue < Sinatra::Application
 		ns_json = ns.to_json
 		puts 'NS: ', ns_json
 
+		if request.content_type == 'application/json'
+			return 200, ns_json
+		elsif request.content_type == 'application/x-yaml'
+			ns_yml = json_to_yaml(ns_json)
+			return 200, ns_yml
+		end
+
 		#if ns_json == 'null'
 		#	logger.error "ERROR: NSD not found"
 		#	return 404
 		#end
-		ns_yml = json_to_yaml(ns_json)
-		return 200, ns_yml
 
 		#return 200, ns.nsd.to_json
 		#return 200, ns.to_json
@@ -248,30 +270,37 @@ class SonataCatalogue < Sinatra::Application
 	# Post a NSD
 	post '/network-services' do
 		# Return if content-type is invalid
-		return 415 unless request.content_type == 'application/x-yaml'
+		return 415 unless (request.content_type == 'application/x-yaml' or request.content_type == 'application/json')
 
-		# Support compatibility for JSON content-type??
-		#return 415 unless request.content_type == 'application/json'
+		# Compatibility support for YAML content-type
+		if request.content_type == 'application/x-yaml'
 
-		# Validate YAML format
-		ns, errors = parse_yaml(request.body.read)
-		#ns, errors = parse_yaml(request.body)
-		#puts 'NS :', ns.to_yaml
-		#puts 'errors :', errors.to_s
+			# Validate YAML format
+			ns, errors = parse_yaml(request.body.read)
+			#ns, errors = parse_yaml(request.body)
+			#puts 'NS :', ns.to_yaml
+			#puts 'errors :', errors.to_s
 
-		return 400, errors.to_json if errors
+			return 400, errors.to_json if errors
 
-		# Translate from YAML format to JSON format
-		#ns_yml = ns.nsd.to_json
-		ns_json = yaml_to_json(ns)
-		#ns_json = yaml_to_json(request.body.read)
+			# Translate from YAML format to JSON format
+			#ns_yml = ns.nsd.to_json
+			ns_json = yaml_to_json(ns)
+			#ns_json = yaml_to_json(request.body.read)
 
-		# Validate JSON format
-		#ns, errors = parse_json(request.body.read)
-		#ns, errors = parse_json(ns.to_json)
-		ns, errors = parse_json(ns_json)
-		puts 'ns: ', ns.to_json
-		return 400, errors.to_json if errors
+			# Validate JSON format
+			#ns, errors = parse_json(request.body.read)
+			#ns, errors = parse_json(ns.to_json)
+			ns, errors = parse_json(ns_json)
+			puts 'ns: ', ns.to_json
+			return 400, errors.to_json if errors
+
+		# Compatibility support for JSON content-type
+		elsif request.content_type == 'application/json'
+			# Parses and validates JSON format
+			ns, errors = parse_json(request.body.read)
+			return 400, errors.to_json if errors
+		end
 
 		#logger.debug ns
 		# Validate NS
@@ -316,8 +345,15 @@ class SonataCatalogue < Sinatra::Application
 
 		puts 'New NSD has been added'
 		ns_json = new_ns.to_json
-		ns_yml = json_to_yaml(ns_json)
-		return 200, ns_yml
+		if request.content_type == 'application/json'
+			return 200, ns_json
+			#return 200, new_ns['_id'].to_json
+
+		elsif request.content_type == 'application/x-yaml'
+			ns_yml = json_to_yaml(ns_json)
+			return 200, ns_yml
+
+		end
 		#return 200, new_ns.to_json
 	end
 
@@ -331,24 +367,31 @@ class SonataCatalogue < Sinatra::Application
 	put '/network-services/id/:sdk_ns_id' do
 
 		# Return if content-type is invalid
-		return 415 unless request.content_type == 'application/x-yaml'
-		#return 415 unless request.content_type == 'application/json'
+		return 415 unless (request.content_type == 'application/x-yaml' or request.content_type == 'application/json')
 
-		# Validate YAML format
-		# When updating a NSD, the json object sent to API must contain just data inside
-		# of the nsd, without the json field nsd: before <- this might be resolved
-		ns, errors = parse_yaml(request.body.read)
-		return 400, errors.to_json if errors
+		# Compatibility support for YAML content-type
+		if request.content_type == 'application/x-yaml'
+			# Validate YAML format
+			# When updating a NSD, the json object sent to API must contain just data inside
+			# of the nsd, without the json field nsd: before <- this might be resolved
+			ns, errors = parse_yaml(request.body.read)
+			return 400, errors.to_json if errors
 
-		# Translate from YAML format to JSON format
-		new_ns_json = yaml_to_json(ns)
+			# Translate from YAML format to JSON format
+			new_ns_json = yaml_to_json(ns)
 
-		# Validate JSON format
-		new_ns, errors = parse_json(new_ns_json)
-		puts 'ns: ', new_ns.to_json
-		puts 'new_ns id', new_ns['_id'].to_json
-		return 400, errors.to_json if errors
+			# Validate JSON format
+			new_ns, errors = parse_json(new_ns_json)
+			puts 'ns: ', new_ns.to_json
+			puts 'new_ns id', new_ns['_id'].to_json
+			return 400, errors.to_json if errors
 
+		# Compatibility support for JSON content-type
+		elsif request.content_type == 'application/json'
+			# Parses and validates JSON format
+			new_ns, errors = parse_json(request.body.read)
+			return 400, errors.to_json if errors
+		end
 
 		# Validate JSON format
 		# When updating a NSD, the json object sent to API must contain just data inside
@@ -356,7 +399,13 @@ class SonataCatalogue < Sinatra::Application
 		#new_ns, errors = parse_json(request.body.read)
 		#return 400, errors.to_json if errors
 
+		# Validate NS
 		# TODO: Check if same Group, Name, Version do already exists in the database
+		#halt 400, 'ERROR: NSD not found' unless ns.has_key?('vnfd')
+		return 400, 'ERROR: NS Group not found' unless new_ns.has_key?('ns_group')
+		return 400, 'ERROR: NS Name not found' unless new_ns.has_key?('ns_name')
+		return 400, 'ERROR: NS Version not found' unless new_ns.has_key?('ns_version')
+
 		# Retrieve stored version
 		begin
 			puts 'Searching ' + params[:sdk_ns_id].to_s
@@ -377,7 +426,8 @@ class SonataCatalogue < Sinatra::Application
 		#new_ns['id'] = new_id.to_s
 		#new_ns['id'] = new_ns['id'].to_s + prng.rand(1000).to_s # Without unique IDs
 		#new_ns['_id'] = new_ns['_id'].to_s + prng.rand(1000).to_s	# Unique IDs per NSD entries
-		new_ns['_id'] = ns['ns_group'].to_s + '.' + ns['ns_name'].to_s + '.' + ns['ns_version'].to_s	# Unique IDs per NSD entries
+		new_ns['_id'] = new_ns['ns_group'].to_s + '.' + new_ns['ns_name'].to_s + '.' + new_ns['ns_version'].to_s	# Unique IDs per NSD entries
+		puts new_ns['_id'].to_s
 		nsd = new_ns # TODO: Avoid having multiple 'nsd' fields containers
 
 
@@ -397,8 +447,15 @@ class SonataCatalogue < Sinatra::Application
 		end
 
 		ns_json = new_ns.to_json
-		ns_yml = json_to_yaml(ns_json)
-		return 200, ns_yml
+
+		if request.content_type == 'application/json'
+			return 200, ns_json
+			#return 200, new_ns['_id'].to_json
+
+		elsif request.content_type == 'application/x-yaml'
+			ns_yml = json_to_yaml(ns_json)
+			return 200, ns_yml
+		end
 		#return 200, new_ns.to_json
 	end
 
@@ -444,16 +501,20 @@ class SonataCatalogue < Sinatra::Application
 		begin
 			vnfs_json = vnfs.to_json
 			#puts 'VNFS: ', vnfs_json
-			vnfs_yml = json_to_yaml(vnfs_json)
+
+			if request.content_type == 'application/json'
+				return 200, vnfs_json
+			elsif request.content_type == 'application/x-yaml'
+				vnfs_yml = json_to_yaml(vnfs_json)
+				return 200, vnfs_yml
+			end
+
 				#puts 'VNFS: ', vnfs_yml
 		rescue
 			logger.error "Error Establishing a Database Connection"
 			return 500, "Error Establishing a Database Connection"
 		end
-
 		#halt 200, vnfs.to_json
-		return 200, vnfs_yml
-
 	end
 
 
@@ -471,10 +532,13 @@ class SonataCatalogue < Sinatra::Application
 		end
 
 		vnf_json = vnf.to_json
+		if request.content_type == 'application/json'
+			return 200, vnf_json
+		elsif request.content_type == 'application/x-yaml'
+			vnf_yml = json_to_yaml(vnf_json)
+			return 200, vnf_yml
+		end
 		#puts 'VNFS: ', vnf_json
-		vnf_yml = json_to_yaml(vnf_json)
-		return 200, vnf_yml
-
 		#halt 200, vnf.to_json
 	end
 
@@ -514,9 +578,12 @@ class SonataCatalogue < Sinatra::Application
 			return 404
 		end
 		vnf_json = vnf.to_json
-		#puts 'VNF: ', vnf_json[0]
-		vnf_yml = json_to_yaml(vnf_json)
-		return 200, vnf_yml
+		if request.content_type == 'application/json'
+			return 200, vnf_json
+		elsif request.content_type == 'application/x-yaml'
+			vnf_yml = json_to_yaml(vnf_json)
+			return 200, vnf_yml
+		end
 	end
 
 
@@ -537,8 +604,12 @@ class SonataCatalogue < Sinatra::Application
 		end
 
 		vnf_json = vnf.to_json
-		vnf_yml = json_to_yaml(vnf_json)
-		return 200, vnf_yml
+		if request.content_type == 'application/json'
+			return 200, vnf_json
+		elsif request.content_type == 'application/x-yaml'
+			vnf_yml = json_to_yaml(vnf_json)
+			return 200, vnf_yml
+		end
 		#return 200, ns.nsd.to_json
 	end
 
@@ -569,9 +640,12 @@ class SonataCatalogue < Sinatra::Application
 
 		vnf_json = vnf.to_json
 		puts 'VNF: ', vnf_json
-
-		vnf_yml = json_to_yaml(vnf_json)
-		return 200, vnf_yml
+		if request.content_type == 'application/json'
+			return 200, vnf_json
+		elsif request.content_type == 'application/x-yaml'
+			vnf_yml = json_to_yaml(vnf_json)
+			return 200, vnf_yml
+		end
 	end
 
 
@@ -582,26 +656,33 @@ class SonataCatalogue < Sinatra::Application
 	# Post a VNFD
 	post '/vnfs' do
 		# Return if content-type is invalid
-		return 415 unless request.content_type == 'application/x-yaml'
+		return 415 unless (request.content_type == 'application/x-yaml' or request.content_type == 'application/json')
 
-		# Support compatibility for JSON content-type??
-		#halt 415 unless request.content_type == 'application/json'
+		# Compatibility support for YAML content-type
+		if request.content_type == 'application/x-yaml'
 
-		# Validate YAML format
-		vnf, errors = parse_yaml(request.body.read)
-		#ns, errors = parse_yaml(request.body)
-		#puts 'NS :', ns.to_yaml
-		#puts 'errors :', errors.to_s
-		#vnf = parse_json(request.body.read)
-		return 400, errors.to_json if errors
+			# Validate YAML format
+			vnf, errors = parse_yaml(request.body.read)
+			#ns, errors = parse_yaml(request.body)
+			#puts 'NS :', ns.to_yaml
+			#puts 'errors :', errors.to_s
+			#vnf = parse_json(request.body.read)
+			return 400, errors.to_json if errors
 
-		# Translate from YAML format to JSON format
-		vnf_json = yaml_to_json(vnf)
+			# Translate from YAML format to JSON format
+			vnf_json = yaml_to_json(vnf)
 
-		# Validate JSON format
-		vnf, errors = parse_json(vnf_json)
-		puts 'vnf: ', vnf.to_json
-		return 400, errors.to_json if errors
+			# Validate JSON format
+			vnf, errors = parse_json(vnf_json)
+			puts 'vnf: ', vnf.to_json
+			return 400, errors.to_json if errors
+
+		# Compatibility support for JSON content-type
+		elsif request.content_type == 'application/json'
+			# Parses and validates JSON format
+			vnf, errors = parse_json(request.body.read)
+			return 400, errors.to_json if errors
+		end
 
 		# Validate VNF
 		#halt 400, 'ERROR: VNFD not found' unless vnf.has_key?('vnfd')
@@ -644,8 +725,12 @@ class SonataCatalogue < Sinatra::Application
 
 		puts 'New VNFD has been added'
 		vnf_json = new_vnf.to_json
-		vnf_yml = json_to_yaml(vnf_json)
-		return 200, vnf_yml
+		if request.content_type == 'application/json'
+			return 200, vnf_json
+		elsif request.content_type == 'application/x-yaml'
+			vnf_yml = json_to_yaml(vnf_json)
+			return 200, vnf_yml
+		end
 		#return 200, new_vnf.to_json
 	end
 
@@ -657,26 +742,36 @@ class SonataCatalogue < Sinatra::Application
 	# Update a VNF
 	put '/vnfs/id/:id' do
 		# Return if content-type is invalid
-		return 415 unless request.content_type == 'application/x-yaml'
+		return 415 unless (request.content_type == 'application/x-yaml' or request.content_type == 'application/json')
 		#halt 415 unless request.content_type == 'application/json'
 
-		# Validate JSON format
-		#new_vnf = parse_json(request.body.read)
+		# Compatibility support for YAML content-type
+		if request.content_type == 'application/x-yaml'
 
-		# Validate YAML format
-		# When updating a NSD, the json object sent to API must contain just data inside
-		# of the nsd, without the json field nsd: before <- this might be resolved
-		new_vnf, errors = parse_yaml(request.body.read)
-		return 400, errors.to_json if errors
+			# Validate JSON format
+			#new_vnf = parse_json(request.body.read)
 
-		# Translate from YAML format to JSON format
-		new_vnf_json = yaml_to_json(new_vnf)
+			# Validate YAML format
+			# When updating a NSD, the json object sent to API must contain just data inside
+			# of the nsd, without the json field nsd: before <- this might be resolved
+			new_vnf, errors = parse_yaml(request.body.read)
+			return 400, errors.to_json if errors
 
-		# Validate JSON format
-		new_vnf, errors = parse_json(new_vnf_json)
-		puts 'vnf: ', new_vnf.to_json
-		puts 'new_vnf id', new_vnf['_id'].to_json
-		return 400, errors.to_json if errors
+			# Translate from YAML format to JSON format
+			new_vnf_json = yaml_to_json(new_vnf)
+
+			# Validate JSON format
+			new_vnf, errors = parse_json(new_vnf_json)
+			puts 'vnf: ', new_vnf.to_json
+			puts 'new_vnf id', new_vnf['_id'].to_json
+			return 400, errors.to_json if errors
+
+		# Compatibility support for JSON content-type
+		elsif request.content_type == 'application/json'
+			# Parses and validates JSON format
+			new_vnf, errors = parse_json(request.body.read)
+			return 400, errors.to_json if errors
+		end
 
 		# Validate VNF
 		# TODO: Check if same Group, Name, Version do already exists in the database
@@ -720,8 +815,12 @@ class SonataCatalogue < Sinatra::Application
 		end
 
 		vnf_json = new_vnf.to_json
-		vnf_yml = json_to_yaml(vnf_json)
-		return 200, vnf_yml
+		if request.content_type == 'application/json'
+			return 200, vnf_json
+		elsif request.content_type == 'application/x-yaml'
+			vnf_yml = json_to_yaml(vnf_json)
+			return 200, vnf_yml
+		end
 		#halt 200, vnf.to_json
 	end
 
