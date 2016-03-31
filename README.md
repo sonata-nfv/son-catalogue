@@ -97,12 +97,12 @@ To support working and testing with the son-catalogue database it is optional to
 
 * [POSTMAN](https://www.getpostman.com/) - Chrome Plugin for HTTP communication
 
+---
 ### Lead developers
 
-The following lead developers are responsible for this repository:
+The following lead developers are responsible for this repository and have admin rights. They can, for example, merge pull requests.
 
-* Shuaib Siddiqui (shuaibsiddiqui)
-
-* Daniel Guija (dang03)
+ - Shuaib Siddiqui (shuaibsiddiqui)
+ - Daniel Guija (dang03)
 
 
