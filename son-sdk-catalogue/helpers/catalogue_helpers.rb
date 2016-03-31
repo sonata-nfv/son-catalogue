@@ -222,6 +222,11 @@ class SonataCatalogue < Sinatra::Application
 						'purpose' => 'List a specific NS by name and version'
 				},
 				{
+						'uri' => '/network-services/group/{external_ns_group}/name/{external_ns_name}/version/{external_ns_version}',
+						'method' => 'GET',
+						'purpose' => 'List a specific NS'
+				},
+				{
 						'uri' => '/network-services/name/{external_ns_name}/last',
 						'method' => 'GET',
 						'purpose' => 'List last version of specific NS by name'
@@ -258,6 +263,11 @@ class SonataCatalogue < Sinatra::Application
 				},
 				{
 						'uri' => '/vnfs/name/{external_vnf_name}/version/{external_vnf_version}',
+						'method' => 'GET',
+						'purpose' => 'List a specific VNF'
+				},
+				{
+						'uri' => '/vnfs/group/{external_vnf_group}/name/{external_vnf_name}/version/{external_vnf_version}',
 						'method' => 'GET',
 						'purpose' => 'List a specific VNF'
 				},
