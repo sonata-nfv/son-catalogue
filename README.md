@@ -2,7 +2,6 @@
 
 # SONATA WP3
 
-
 ## SDK NS - VNF - Package Descriptors Catalogues
 
 The following repository contains the SONATA SDK CATALOGUE (son-catalogue component for sdk) distributed in the next structure:
@@ -98,10 +97,9 @@ To support working and testing with the son-catalogue database it is optional to
 
 ### Lead developers
 
-The following lead developers are responsible for this repository:
++The following lead developers are responsible for this repository and have admin rights. They can, for example, merge pull requests.
 
-* Shuaib Siddiqui (shuaibsiddiqui)
-
-* Daniel Guija (dang03)
+- Shuaib Siddiqui (shuaibsiddiqui)
+- Daniel Guija (dang03)
 
 
