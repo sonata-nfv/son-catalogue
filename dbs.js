@@ -20,3 +20,13 @@ db.createCollection("vnfs");
 db = connect("mongo:27017/pd_catalogue");
 db.createCollection("pd");
 
+/* Uncomment next lines if MongoDB installation will be done in localhost, and comment lines above */
+//db = connect("127.0.0.1:27017/ns_catalogue");
+//db.createCollection("ns");
+
+//db = connect("127.0.0.1:27017/vnf_catalogue");
+//db.createCollection("vnfs");
+
+//db = connect("127.0.0.1:27017/pd_catalogue");
+//db.createCollection("pd");
+
