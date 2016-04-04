@@ -37,9 +37,6 @@ class SonataCatalogue < Sinatra::Application
 	#		GET specific version
 
 
-	### NSD API METHODS ###
-
-
 	# @method get_log
 	# @overload get '/network-services/log'
 	#	Returns contents of log file
@@ -74,6 +71,8 @@ class SonataCatalogue < Sinatra::Application
 		end
 	end
 
+
+	############################################ NSD API METHODS ############################################
 
 	# @method get_nss
 	# @overload get '/network-services'
@@ -208,7 +207,7 @@ class SonataCatalogue < Sinatra::Application
 
 
 	# @method get_nsd_external_ns_last_version
-	# @overload get '/network-services/:external_ns_name/last'
+	# @overload get '/network-services/name/:external_ns_name/last'
 	#	Show a NS last version in JSON or YAML format
 	#	@param [String] external_ns_name NS external Name
 	# Show a NS name
@@ -328,7 +327,6 @@ class SonataCatalogue < Sinatra::Application
 		return 400, 'ERROR: NS Group not found' unless ns.has_key?('ns_group')
 		return 400, 'ERROR: NS Version not found' unless ns.has_key?('ns_version')
 
-
 		# --> Validation disabled
 		# Validate NSD
 		#begin
@@ -376,7 +374,7 @@ class SonataCatalogue < Sinatra::Application
 
 
 	# @method update_nss
-	# @overload put '/network-services/id/'
+	# @overload put '/network-services/id/:sdk_ns_id'
 	# Update a NS in JSON or YAML format
 	# @param [YAML] NS in YAML format
 	# Update a NS
@@ -497,7 +495,7 @@ class SonataCatalogue < Sinatra::Application
 	end
 
 
-	### VNFD API METHODS ###
+	############################################ VNFD API METHODS ############################################
 
 	# @method get_vnfs
 	# @overload get '/vnfs'
@@ -563,7 +561,7 @@ class SonataCatalogue < Sinatra::Application
 
 
 	# @method get_vnfs_vnf_name
-	# @overload get '/vnfs/:external_vnf_name'
+	# @overload get '/vnfs/name/:vnf_name'
 	#	Show a VNF or VNF list in JSON or YAML format
 	#	@param [String] vnf_name VNF external Name
 	# Show a VNF by name
@@ -607,7 +605,7 @@ class SonataCatalogue < Sinatra::Application
 
 
 	# @method get_vnfd_external_vnf_version
-	# @overload get '/vnfs/:external_vnf_name/version/:version'
+	# @overload get '/vnfs/name/:external_vnf_name/version/:version'
 	#	Show a VNF in JSON or YAML format
 	#	@param [String] external_vnf_name VNF external Name
 	# Show a VNF name
@@ -876,6 +874,9 @@ class SonataCatalogue < Sinatra::Application
 
 		return 200, 'OK: VNFD removed'
 	end
+
+
+	############################################ PD API METHODS ############################################
 
 
 

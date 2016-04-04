@@ -1,5 +1,3 @@
-### WORK IN PROGRESS - NS/VNF APIs ARE BEING MERGED ###
-
 # SDK Catalogues [![Build Status](http://jenkins.sonata-nfv.eu/buildStatus/icon?job=son-sdk-catalogue)](http://jenkins.sonata-nfv.eu/job/son-sdk-catalogue)
 
 This repository contains the development for the SDK catalogues. It holds the API implementation of SDK catalogue and repos. Moreover, is is closely related to the [son-catalogue-repos](https://github.com/sonata-nfv/son-catalogue-repos) repository that holds the catalogs of the SDK as well at the [son-schema](https://github.com/sonata-nfv/son-schema) repository that holds the schema for the various descriptors, such as the VNFD and the NSD.
@@ -7,8 +5,6 @@ This repository contains the development for the SDK catalogues. It holds the AP
 The structure of this repository is as follows:
 
 * SON-SDK-CATALOGUE folder contains the SDK-CATALOGUE API to access to the VNF Catalogue and the NS Catalogue for the Software Development Kit.
-
-* (deprecated) SON-SDK-CATALOGUE folder contains the SDK-NS-CATALOGUE and SDK-VNF-CATALOGUE directories for the Software Development Kit files.
 
 ### Requirements
 
