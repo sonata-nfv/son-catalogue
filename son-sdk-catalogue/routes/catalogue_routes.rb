@@ -101,6 +101,8 @@ class SonataCatalogue < Sinatra::Application
 			elsif request.content_type == 'application/x-yaml'
 				nss_yml = json_to_yaml(nss_json)
 				return 200, nss_yml
+			#else
+			#	return 200, nss_json
 			end
 		rescue
 			logger.error "Error Establishing a Database Connection"
@@ -141,7 +143,7 @@ class SonataCatalogue < Sinatra::Application
 	#	@param [String] external_ns_name NS external Name
 	# Show a NS by name
 	get '/network-services/name/:external_ns_name' do
-		raise NotImplementedError
+		#raise NotImplementedError
 		#params[:offset] ||= 1
 		#params[:limit] ||= 10
 
@@ -182,14 +184,21 @@ class SonataCatalogue < Sinatra::Application
 
 	# @method get_nsd_external_ns_version
 	# @overload get '/network-services/:external_ns_name/version/:version'
-	#	Show a NS in JSON or YAML format
+	#	Show a NS list in JSON or YAML format
 	#	@param [String] external_ns_name NS external Name
 	# Show a NS name
 	#	@param [Integer] external_ns_version NS version
 	# Show a NS version
 	get '/network-services/name/:external_ns_name/version/:version' do
 		begin
-			ns = Ns.find_by({"ns_name" =>  params[:external_ns_name], "ns_version" => params[:version]})
+			#ns = Ns.find_by({"ns_name" =>  params[:external_ns_name], "ns_version" => params[:version]})
+			ns = Ns.where({"ns_name" =>  params[:external_ns_name], "ns_version" => params[:version]})
+
+			if ns.size.to_i == 0
+				logger.error "ERROR: NSD not found"
+				return 404
+			end
+
 		rescue Mongoid::Errors::DocumentNotFound => e
 			logger.error e
 			return 404
@@ -208,7 +217,7 @@ class SonataCatalogue < Sinatra::Application
 
 	# @method get_nsd_external_ns_last_version
 	# @overload get '/network-services/name/:external_ns_name/last'
-	#	Show a NS last version in JSON or YAML format
+	#	Show a NS list for last version in JSON or YAML format
 	#	@param [String] external_ns_name NS external Name
 	# Show a NS name
 	get '/network-services/name/:external_ns_name/last' do
@@ -224,13 +233,29 @@ class SonataCatalogue < Sinatra::Application
 
 			#ns = Ns.distinct( "nsd.version" )#.where({ "nsd.name" =>  params[:external_ns_name]})
 			#ns = Ns.where({"nsd.name" => params[:external_ns_name]})
-			# TODO: Re-work in case ns_name is the identifier or ns_name can return multiple entries
-			ns = Ns.where({"ns_name" => params[:external_ns_name]}).sort({"ns_version" => -1}).limit(1).first()
-			puts 'NS: ', ns
 
-			if ns == nil
+			ns = Ns.where({"ns_name" => params[:external_ns_name]}).sort({"ns_version" => -1})#.limit(1).first()
+			puts 'NS: ', ns
+			puts 'NS SiZe: ', ns.size.to_s
+			#puts 'NS first: ', ns.first.to_s
+
+			if ns.size.to_i == 0
 				logger.error "ERROR: NSD not found"
 				return 404
+
+			elsif ns == nil
+				logger.error "ERROR: NSD not found"
+				return 404
+
+			else
+				ns_list = []
+				#puts 'first', ns.first.ns_version
+				last_version = ns.first.ns_version
+				#App.all.to_a
+				ns.each do |nsd|
+					ns_list.push(nsd) if nsd.ns_version == last_version
+				end
+				#puts 'ns_list', ns_list.to_s
 			end
 
 		rescue Mongoid::Errors::DocumentNotFound => e
@@ -238,12 +263,8 @@ class SonataCatalogue < Sinatra::Application
 			return 404
 		end
 
-		# Got a list, then for each item convert version field to float and get the higher
-
-		#puts 'NS size: ', ns.size.to_s
-		#puts 'version example', '4.1'.to_f
-
-		ns_json = ns.to_json
+		#ns_json = ns.to_json
+		ns_json = ns_list.to_json
 		puts 'NS: ', ns_json
 
 		if request.content_type == 'application/json'
@@ -273,7 +294,22 @@ class SonataCatalogue < Sinatra::Application
 	#	@param [Integer] external_ns_version NS version
 	# Show a NS version
 	get '/network-services/group/:external_ns_group/name/:external_ns_name/version/:external_ns_version' do
-		raise NotImplementedError
+		#raise NotImplementedError
+		begin
+			ns = Ns.find_by({"ns_group" =>  params[:external_ns_group], "ns_name" =>  params[:external_ns_name], "ns_version" => params[:version]})
+		rescue Mongoid::Errors::DocumentNotFound => e
+			logger.error e
+			return 404
+		end
+
+		ns_json = ns.to_json
+		if request.content_type == 'application/json'
+			return 200, ns_json
+		elsif request.content_type == 'application/x-yaml'
+			ns_yml = json_to_yaml(ns_json)
+			return 200, ns_yml
+		end
+		#return 200, ns.nsd.to_json
 	end
 
 
@@ -433,10 +469,16 @@ class SonataCatalogue < Sinatra::Application
 		rescue Mongoid::Errors::DocumentNotFound => e
 			return 400, 'This NSD does not exists'
 		end
+		# Check if NS already exists in the catalogue by name, group and version
+		begin
+			ns = Ns.find_by({"ns_name" =>  new_ns['ns_name'], "ns_group" => new_ns['ns_group'], "ns_version" => new_ns['ns_version']})
+			return 400, 'ERROR: Duplicated NS Name, Group and Version'
+		rescue Mongoid::Errors::DocumentNotFound => e
+		end
 
 		# Update to new version
 		nsd = {}
-		prng = Random.new
+		#prng = Random.new
 		puts 'Updating...'
 		#puts 'new_ns', new_ns['id']
 		#new_id = new_ns['id'].to_i + prng.rand(1000)
@@ -446,7 +488,6 @@ class SonataCatalogue < Sinatra::Application
 		new_ns['_id'] = new_ns['ns_group'].to_s + '.' + new_ns['ns_name'].to_s + '.' + new_ns['ns_version'].to_s	# Unique IDs per NSD entries
 		puts new_ns['_id'].to_s
 		nsd = new_ns # TODO: Avoid having multiple 'nsd' fields containers
-
 
 		# --> Validation disabled
 		# Validate NSD
@@ -566,7 +607,6 @@ class SonataCatalogue < Sinatra::Application
 	#	@param [String] vnf_name VNF external Name
 	# Show a VNF by name
 	get '/vnfs/name/:vnf_name' do
-		raise NotImplementedError
 		#params[:offset] ||= 1
 		#params[:limit] ||= 10
 
@@ -606,7 +646,7 @@ class SonataCatalogue < Sinatra::Application
 
 	# @method get_vnfd_external_vnf_version
 	# @overload get '/vnfs/name/:external_vnf_name/version/:version'
-	#	Show a VNF in JSON or YAML format
+	#	Show a VNF list in JSON or YAML format
 	#	@param [String] external_vnf_name VNF external Name
 	# Show a VNF name
 	#	@param [Integer] external_vnf_version VNF version
@@ -614,7 +654,14 @@ class SonataCatalogue < Sinatra::Application
 	get '/vnfs/name/:external_vnf_name/version/:version' do
 		begin
 #			ns = CatalogueModels.find( params[:external_ns_id] )
-			vnf = Vnf.find_by( { "vnf_name" =>  params[:external_vnf_name], "vnf_version" => params[:version]})
+			#vnf = Vnf.find_by( { "vnf_name" =>  params[:external_vnf_name], "vnf_version" => params[:version]})
+			vnf = Vnf.where( { "vnf_name" =>  params[:external_vnf_name], "vnf_version" => params[:version]})
+
+			if vnf.size.to_i == 0
+				logger.error "ERROR: VNFD not found"
+				return 404
+			end
+
 		rescue Mongoid::Errors::DocumentNotFound => e
 			logger.error e
 			return 404
@@ -633,7 +680,7 @@ class SonataCatalogue < Sinatra::Application
 
 	# @method get_vnfd_external_vnf_last_version
 	# @overload get '/vnfs/:external_vnf_name/last'
-	#	Show a VNF last version in JSON or YAML format
+	#	Show a VNF list with last version in JSON or YAML format
 	#	@param [String] external_ns_name NS external Name
 	# Show a VNF name
 	get '/vnfs/name/:external_vnf_name/last' do
@@ -642,12 +689,26 @@ class SonataCatalogue < Sinatra::Application
 		begin
 			puts 'params', params
 			# TODO: Re-work in case vnf_name is the identifier or vnf_name can return multiple entries
-			vnf = Vnf.where({"vnf_name" => params[:external_vnf_name]}).sort({"vnf_version" => -1}).limit(1).first()
+			vnf = Vnf.where({"vnf_name" => params[:external_vnf_name]}).sort({"vnf_version" => -1})#.limit(1).first()
 			puts 'VNF: ', vnf
+			puts 'VNF SiZe: ', vnf.size.to_s
 
-			if vnf == nil
+			if vnf.size.to_i == 0
+				logger.error "ERROR: NSD not found"
+				return 404
+
+			elsif vnf == nil
 				logger.error "ERROR: VNFD not found"
 				return 404
+
+			else
+				vnf_list = []
+				last_version = vnf.first.vnf_version
+				vnf.each do |vnfd|
+					vnf_list.push(vnfd) if vnfd.vnf_version == last_version
+				end
+				#puts 'ns_list', ns_list.to_s
+
 			end
 
 		rescue Mongoid::Errors::DocumentNotFound => e
@@ -655,8 +716,9 @@ class SonataCatalogue < Sinatra::Application
 			return 404
 		end
 
-		vnf_json = vnf.to_json
+		vnf_json = vnf_list.to_json
 		puts 'VNF: ', vnf_json
+
 		if request.content_type == 'application/json'
 			return 200, vnf_json
 		elsif request.content_type == 'application/x-yaml'
@@ -676,7 +738,23 @@ class SonataCatalogue < Sinatra::Application
 	#	@param [Integer] external_vnf_version VNF version
 	# Show a VNF version
 	get '/vnfs/group/:external_vnf_group/name/:external_vnf_name/version/:version' do
-		raise NotImplementedError
+		#raise NotImplementedError
+		begin
+#			ns = CatalogueModels.find( params[:external_ns_id] )
+			vnf = Vnf.find_by( {"vnf_group" =>  params[:external_vnf_group], "vnf_name" =>  params[:external_vnf_name], "vnf_version" => params[:version]})
+		rescue Mongoid::Errors::DocumentNotFound => e
+			logger.error e
+			return 404
+		end
+
+		vnf_json = vnf.to_json
+		if request.content_type == 'application/json'
+			return 200, vnf_json
+		elsif request.content_type == 'application/x-yaml'
+			vnf_yml = json_to_yaml(vnf_json)
+			return 200, vnf_yml
+		end
+		#return 200, ns.nsd.to_json
 	end
 
 
@@ -829,11 +907,16 @@ class SonataCatalogue < Sinatra::Application
 		rescue Mongoid::Errors::DocumentNotFound => e
 			halt 404 # 'This VNFD does not exists'
 		end
+		begin
+			vnf = Vnf.find_by( {"vnf_name"=>new_vnf['vnf_name'], "vnf_group"=>new_vnf['vnf_group'], "vnf_version"=>new_vnf['vnf_version']} )
+			return 400, 'ERROR: Duplicated VNF Name, Group and Version'
+		rescue Mongoid::Errors::DocumentNotFound => e
+		end
 
 		# Update to new version
 		#vnf.update_attributes(new_vnf)
 		vnfd = {}
-		prng = Random.new
+		#prng = Random.new
 		puts 'Updating...'
 
 		#new_vnf['_id'] = new_vnf['_id'].to_s + prng.rand(1000).to_s	# Unique IDs per NSD entries
