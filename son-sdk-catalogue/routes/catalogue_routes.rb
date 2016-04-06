@@ -116,9 +116,9 @@ class SonataCatalogue < Sinatra::Application
 	#	Show a NS in JSON or YAML format
 	#	@param [String] sdk_ns_id NS SDK ID
 	# Show a NS by internal ID (group.name.version)
-	get '/network-services/id/:sdk_ns_id' do
+	get '/network-services/id/:id' do
 		begin
-			ns = Ns.find(params[:sdk_ns_id] ) # no ID fields {_id: false}
+			ns = Ns.find(params[:id] ) # no ID fields {_id: false}
 			#ns = Ns.find_by( { "nsd.id" =>  params[:external_ns_id]})
 		rescue Mongoid::Errors::DocumentNotFound => e
 			logger.error e
@@ -142,7 +142,7 @@ class SonataCatalogue < Sinatra::Application
 	#	Show a NS or NS list in JSON or YAML format
 	#	@param [String] external_ns_name NS external Name
 	# Show a NS by name
-	get '/network-services/name/:external_ns_name' do
+	get '/network-services/name/:name' do
 		#raise NotImplementedError
 		#params[:offset] ||= 1
 		#params[:limit] ||= 10
@@ -159,7 +159,7 @@ class SonataCatalogue < Sinatra::Application
 			#headers['Link'] = build_http_link_name(params[:offset].to_i, params[:limit], params[:external_ns_name])
 
 			#ns = Ns.distinct( "nsd.version" )#.where({ "nsd.name" =>  params[:external_ns_name]})
-			ns = Ns.where({"ns_name" => params[:external_ns_name]})
+			ns = Ns.where({"name" => params[:name]})
 			puts 'NS: ', ns.size.to_s
 
 			if ns.size.to_i == 0
@@ -189,10 +189,10 @@ class SonataCatalogue < Sinatra::Application
 	# Show a NS name
 	#	@param [Integer] external_ns_version NS version
 	# Show a NS version
-	get '/network-services/name/:external_ns_name/version/:version' do
+	get '/network-services/name/:name/version/:version' do
 		begin
 			#ns = Ns.find_by({"ns_name" =>  params[:external_ns_name], "ns_version" => params[:version]})
-			ns = Ns.where({"ns_name" =>  params[:external_ns_name], "ns_version" => params[:version]})
+			ns = Ns.where({"name" =>  params[:name], "version" => params[:version]})
 
 			if ns.size.to_i == 0
 				logger.error "ERROR: NSD not found"
@@ -220,7 +220,7 @@ class SonataCatalogue < Sinatra::Application
 	#	Show a NS list for last version in JSON or YAML format
 	#	@param [String] external_ns_name NS external Name
 	# Show a NS name
-	get '/network-services/name/:external_ns_name/last' do
+	get '/network-services/name/:name/last' do
 
 		# Search and get all items of NS by name
 		begin
@@ -232,9 +232,9 @@ class SonataCatalogue < Sinatra::Application
 			#headers['Link'] = build_http_link_name(params[:offset].to_i, params[:limit], params[:external_ns_name])
 
 			#ns = Ns.distinct( "nsd.version" )#.where({ "nsd.name" =>  params[:external_ns_name]})
-			#ns = Ns.where({"nsd.name" => params[:external_ns_name]})
+			#ns = Ns.where({"nsd.name" => params[:external_name]})
 
-			ns = Ns.where({"ns_name" => params[:external_ns_name]}).sort({"ns_version" => -1})#.limit(1).first()
+			ns = Ns.where({"name" => params[:name]}).sort({"version" => -1})#.limit(1).first()
 			puts 'NS: ', ns
 			puts 'NS SiZe: ', ns.size.to_s
 			#puts 'NS first: ', ns.first.to_s
@@ -250,10 +250,10 @@ class SonataCatalogue < Sinatra::Application
 			else
 				ns_list = []
 				#puts 'first', ns.first.ns_version
-				last_version = ns.first.ns_version
+				last_version = ns.first.version
 				#App.all.to_a
 				ns.each do |nsd|
-					ns_list.push(nsd) if nsd.ns_version == last_version
+					ns_list.push(nsd) if nsd.version == last_version
 				end
 				#puts 'ns_list', ns_list.to_s
 			end
@@ -293,10 +293,10 @@ class SonataCatalogue < Sinatra::Application
 	# Show a NS name
 	#	@param [Integer] external_ns_version NS version
 	# Show a NS version
-	get '/network-services/group/:external_ns_group/name/:external_ns_name/version/:external_ns_version' do
+	get '/network-services/vendor/:vendor/name/:name/version/:version' do
 		#raise NotImplementedError
 		begin
-			ns = Ns.find_by({"ns_group" =>  params[:external_ns_group], "ns_name" =>  params[:external_ns_name], "ns_version" => params[:version]})
+			ns = Ns.find_by({"vendor" =>  params[:vendor], "name" =>  params[:name], "version" => params[:version]})
 		rescue Mongoid::Errors::DocumentNotFound => e
 			logger.error e
 			return 404
@@ -359,9 +359,9 @@ class SonataCatalogue < Sinatra::Application
 		#return 400, 'ERROR: NS Name not found' unless ns.has_key?('name')
 		#return 400, 'ERROR: NSD not found' unless ns.has_key?('nsd')
 
-		return 400, 'ERROR: NS Name not found' unless ns.has_key?('ns_name')
-		return 400, 'ERROR: NS Group not found' unless ns.has_key?('ns_group')
-		return 400, 'ERROR: NS Version not found' unless ns.has_key?('ns_version')
+		return 400, 'ERROR: NS Name not found' unless ns.has_key?('name')
+		return 400, 'ERROR: NS Vendor not found' unless ns.has_key?('vendor')
+		return 400, 'ERROR: NS Version not found' unless ns.has_key?('version')
 
 		# --> Validation disabled
 		# Validate NSD
@@ -374,8 +374,8 @@ class SonataCatalogue < Sinatra::Application
 		#vnfExists(ns['nsd']['vnfds'])
 
 		begin
-			ns = Ns.find_by({"ns_name" =>  ns['ns_name'], "ns_group" => ns['ns_group'], "ns_version" => ns['ns_version']})
-			return 400, 'ERROR: Duplicated NS Name, Group and Version'
+			ns = Ns.find_by({"name" =>  ns['name'], "vendor" => ns['vendor'], "version" => ns['version']})
+			return 400, 'ERROR: Duplicated NS Name, Vendor and Version'
 		rescue Mongoid::Errors::DocumentNotFound => e
 		end
 		# Check if NSD has an ID (it should not) and if it already exists in the catalogue
@@ -388,7 +388,7 @@ class SonataCatalogue < Sinatra::Application
 		# Save to DB
 		begin
 			# Generate the IDENTIFIER(group.name.version) for the descriptor
-			ns['_id'] = ns['ns_group'].to_s + '.' + ns['ns_name'].to_s + '.' + ns['ns_version'].to_s
+			ns['_id'] = ns['vendor'].to_s + '.' + ns['name'].to_s + '.' + ns['version'].to_s
 			new_ns = Ns.create!(ns)
 		rescue Moped::Errors::OperationFailure => e
 			return 400, 'ERROR: Duplicated NS ID' if e.message.include? 'E11000'
@@ -417,7 +417,7 @@ class SonataCatalogue < Sinatra::Application
 	# @param [JSON] NS in JSON format
 	# Update a NS
 	## Catalogue - UPDATE
-	put '/network-services/id/:sdk_ns_id' do
+	put '/network-services/id/:id' do
 
 		# Return if content-type is invalid
 		return 415 unless (request.content_type == 'application/x-yaml' or request.content_type == 'application/json')
@@ -455,15 +455,15 @@ class SonataCatalogue < Sinatra::Application
 		# Validate NS
 		# TODO: Check if same Group, Name, Version do already exists in the database
 		#halt 400, 'ERROR: NSD not found' unless ns.has_key?('vnfd')
-		return 400, 'ERROR: NS Group not found' unless new_ns.has_key?('ns_group')
-		return 400, 'ERROR: NS Name not found' unless new_ns.has_key?('ns_name')
-		return 400, 'ERROR: NS Version not found' unless new_ns.has_key?('ns_version')
+		return 400, 'ERROR: NS Vendor not found' unless new_ns.has_key?('vendor')
+		return 400, 'ERROR: NS Name not found' unless new_ns.has_key?('name')
+		return 400, 'ERROR: NS Version not found' unless new_ns.has_key?('version')
 
 		# Retrieve stored version
 		begin
-			puts 'Searching ' + params[:sdk_ns_id].to_s
+			puts 'Searching ' + params[:id].to_s
 
-			ns = Ns.find_by( { "_id" =>  params[:sdk_ns_id] })
+			ns = Ns.find_by( { "_id" =>  params[:id] })
 
 			puts 'NS is found'
 		rescue Mongoid::Errors::DocumentNotFound => e
@@ -471,8 +471,8 @@ class SonataCatalogue < Sinatra::Application
 		end
 		# Check if NS already exists in the catalogue by name, group and version
 		begin
-			ns = Ns.find_by({"ns_name" =>  new_ns['ns_name'], "ns_group" => new_ns['ns_group'], "ns_version" => new_ns['ns_version']})
-			return 400, 'ERROR: Duplicated NS Name, Group and Version'
+			ns = Ns.find_by({"name" =>  new_ns['name'], "vendor" => new_ns['vendor'], "version" => new_ns['version']})
+			return 400, 'ERROR: Duplicated NS Name, Vendor and Version'
 		rescue Mongoid::Errors::DocumentNotFound => e
 		end
 
@@ -485,7 +485,7 @@ class SonataCatalogue < Sinatra::Application
 		#new_ns['id'] = new_id.to_s
 		#new_ns['id'] = new_ns['id'].to_s + prng.rand(1000).to_s # Without unique IDs
 		#new_ns['_id'] = new_ns['_id'].to_s + prng.rand(1000).to_s	# Unique IDs per NSD entries
-		new_ns['_id'] = new_ns['ns_group'].to_s + '.' + new_ns['ns_name'].to_s + '.' + new_ns['ns_version'].to_s	# Unique IDs per NSD entries
+		new_ns['_id'] = new_ns['vendor'].to_s + '.' + new_ns['name'].to_s + '.' + new_ns['version'].to_s	# Unique IDs per NSD entries
 		puts new_ns['_id'].to_s
 		nsd = new_ns # TODO: Avoid having multiple 'nsd' fields containers
 
@@ -523,11 +523,11 @@ class SonataCatalogue < Sinatra::Application
 	#	Delete a NS by its ID
 	#	@param [String] external_ns_id NS external ID
 	# Delete a NS
-	delete '/network-services/id/:sdk_ns_id' do
+	delete '/network-services/id/:id' do
 		#logger.error params[:external_ns_id]
 		begin
 			#ns = CatalogueModels.find( params[:external_ns_id] )
-			ns = Ns.find_by(params[:external_ns_id] )
+			ns = Ns.find_by(params[:id] )
 		rescue Mongoid::Errors::DocumentNotFound => e
 			return 404,'ERROR: Operation failed'
 		end
@@ -606,7 +606,7 @@ class SonataCatalogue < Sinatra::Application
 	#	Show a VNF or VNF list in JSON or YAML format
 	#	@param [String] vnf_name VNF external Name
 	# Show a VNF by name
-	get '/vnfs/name/:vnf_name' do
+	get '/vnfs/name/:name' do
 		#params[:offset] ||= 1
 		#params[:limit] ||= 10
 
@@ -622,7 +622,7 @@ class SonataCatalogue < Sinatra::Application
 			#headers['Link'] = build_http_link_name(params[:offset].to_i, params[:limit], params[:vnf_name])
 
 			#ns = Ns.distinct( "nsd.version" )#.where({ "nsd.name" =>  params[:external_ns_name]})
-			vnf = Vnf.where({"vnf_name" => params[:vnf_name]})
+			vnf = Vnf.where({"name" => params[:name]})
 			puts 'VNF: ', vnf.size.to_s
 
 			if vnf.size.to_i == 0
@@ -651,11 +651,11 @@ class SonataCatalogue < Sinatra::Application
 	# Show a VNF name
 	#	@param [Integer] external_vnf_version VNF version
 	# Show a VNF version
-	get '/vnfs/name/:external_vnf_name/version/:version' do
+	get '/vnfs/name/:name/version/:version' do
 		begin
 #			ns = CatalogueModels.find( params[:external_ns_id] )
 			#vnf = Vnf.find_by( { "vnf_name" =>  params[:external_vnf_name], "vnf_version" => params[:version]})
-			vnf = Vnf.where( { "vnf_name" =>  params[:external_vnf_name], "vnf_version" => params[:version]})
+			vnf = Vnf.where( { "name" =>  params[:name], "version" => params[:version]})
 
 			if vnf.size.to_i == 0
 				logger.error "ERROR: VNFD not found"
@@ -683,13 +683,13 @@ class SonataCatalogue < Sinatra::Application
 	#	Show a VNF list with last version in JSON or YAML format
 	#	@param [String] external_ns_name NS external Name
 	# Show a VNF name
-	get '/vnfs/name/:external_vnf_name/last' do
+	get '/vnfs/name/:name/last' do
 
 		# Search and get all items of NS by name
 		begin
 			puts 'params', params
 			# TODO: Re-work in case vnf_name is the identifier or vnf_name can return multiple entries
-			vnf = Vnf.where({"vnf_name" => params[:external_vnf_name]}).sort({"vnf_version" => -1})#.limit(1).first()
+			vnf = Vnf.where({"name" => params[:name]}).sort({"version" => -1})#.limit(1).first()
 			puts 'VNF: ', vnf
 			puts 'VNF SiZe: ', vnf.size.to_s
 
@@ -703,9 +703,9 @@ class SonataCatalogue < Sinatra::Application
 
 			else
 				vnf_list = []
-				last_version = vnf.first.vnf_version
+				last_version = vnf.first.version
 				vnf.each do |vnfd|
-					vnf_list.push(vnfd) if vnfd.vnf_version == last_version
+					vnf_list.push(vnfd) if vnfd.version == last_version
 				end
 				#puts 'ns_list', ns_list.to_s
 
@@ -737,11 +737,11 @@ class SonataCatalogue < Sinatra::Application
 	# Show a VNF name
 	#	@param [Integer] external_vnf_version VNF version
 	# Show a VNF version
-	get '/vnfs/group/:external_vnf_group/name/:external_vnf_name/version/:version' do
+	get '/vnfs/vendor/:vendor/name/:name/version/:version' do
 		#raise NotImplementedError
 		begin
 #			ns = CatalogueModels.find( params[:external_ns_id] )
-			vnf = Vnf.find_by( {"vnf_group" =>  params[:external_vnf_group], "vnf_name" =>  params[:external_vnf_name], "vnf_version" => params[:version]})
+			vnf = Vnf.find_by( {"vendor" =>  params[:vendor], "name" =>  params[:name], "version" => params[:version]})
 		rescue Mongoid::Errors::DocumentNotFound => e
 			logger.error e
 			return 404
@@ -797,9 +797,9 @@ class SonataCatalogue < Sinatra::Application
 
 		# Validate VNF
 		#halt 400, 'ERROR: VNFD not found' unless vnf.has_key?('vnfd')
-		return 400, 'ERROR: VNF Group not found' unless vnf.has_key?('vnf_group')
-		return 400, 'ERROR: VNF Name not found' unless vnf.has_key?('vnf_name')
-		return 400, 'ERROR: VNF Version not found' unless vnf.has_key?('vnf_version')
+		return 400, 'ERROR: VNF Vendor not found' unless vnf.has_key?('vendor')
+		return 400, 'ERROR: VNF Name not found' unless vnf.has_key?('name')
+		return 400, 'ERROR: VNF Version not found' unless vnf.has_key?('version')
 
 		# --> Validation disabled
 		# Validate VNFD
@@ -813,8 +813,8 @@ class SonataCatalogue < Sinatra::Application
 		#end
 
 		begin
-			vnf = Vnf.find_by( {"vnf_name"=>vnf['vnf_name'], "vnf_group"=>vnf['vnf_group'], "vnf_version"=>vnf['vnf_version']} )
-			return 400, 'ERROR: Duplicated VNF Name, Group and Version'
+			vnf = Vnf.find_by( {"name"=>vnf['name'], "vendor"=>vnf['vendor'], "version"=>vnf['version']} )
+			return 400, 'ERROR: Duplicated VNF Name, Vendor and Version'
 		rescue Mongoid::Errors::DocumentNotFound => e
 		end
 		# Check if VNFD has an ID (it should not) and if it already exists in the catalogue
@@ -827,7 +827,7 @@ class SonataCatalogue < Sinatra::Application
 		# Save to BD
 		begin
 			# Generate the group.name.version ID for the descriptor
-			vnf['_id'] = vnf['vnf_group'].to_s + '.' + vnf['vnf_name'].to_s + '.' + vnf['vnf_version'].to_s
+			vnf['_id'] = vnf['vendor'].to_s + '.' + vnf['name'].to_s + '.' + vnf['version'].to_s
 			new_vnf = Vnf.create!(vnf)
 		rescue Moped::Errors::OperationFailure => e
 			halt 400, 'ERROR: Duplicated VNF ID' if e.message.include? 'E11000'
@@ -887,9 +887,9 @@ class SonataCatalogue < Sinatra::Application
 		# Validate VNF
 		# TODO: Check if same Group, Name, Version do already exists in the database
 		#halt 400, 'ERROR: VNFD not found' unless vnf.has_key?('vnfd')
-		return 400, 'ERROR: VNF Group not found' unless new_vnf.has_key?('vnf_group')
-		return 400, 'ERROR: VNF Name not found' unless new_vnf.has_key?('vnf_name')
-		return 400, 'ERROR: VNF Version not found' unless new_vnf.has_key?('vnf_version')
+		return 400, 'ERROR: VNF Vendor not found' unless new_vnf.has_key?('vendor')
+		return 400, 'ERROR: VNF Name not found' unless new_vnf.has_key?('name')
+		return 400, 'ERROR: VNF Version not found' unless new_vnf.has_key?('version')
 
 		# Validate VNFD
 		#begin
@@ -908,8 +908,8 @@ class SonataCatalogue < Sinatra::Application
 			halt 404 # 'This VNFD does not exists'
 		end
 		begin
-			vnf = Vnf.find_by( {"vnf_name"=>new_vnf['vnf_name'], "vnf_group"=>new_vnf['vnf_group'], "vnf_version"=>new_vnf['vnf_version']} )
-			return 400, 'ERROR: Duplicated VNF Name, Group and Version'
+			vnf = Vnf.find_by( {"name"=>new_vnf['name'], "vendor"=>new_vnf['vendor'], "version"=>new_vnf['version']} )
+			return 400, 'ERROR: Duplicated VNF Name, Vendor and Version'
 		rescue Mongoid::Errors::DocumentNotFound => e
 		end
 
@@ -921,7 +921,7 @@ class SonataCatalogue < Sinatra::Application
 
 		#new_vnf['_id'] = new_vnf['_id'].to_s + prng.rand(1000).to_s	# Unique IDs per NSD entries
 		# Update the group.name.version ID for the descriptor
-		new_vnf['_id'] = new_vnf['vnf_group'].to_s + '.' + new_vnf['vnf_name'].to_s + '.' + new_vnf['vnf_version'].to_s
+		new_vnf['_id'] = new_vnf['vendor'].to_s + '.' + new_vnf['name'].to_s + '.' + new_vnf['version'].to_s
 		vnfd = new_vnf # TODO: Avoid having multiple 'vnfd' fields containers
 
 		begin

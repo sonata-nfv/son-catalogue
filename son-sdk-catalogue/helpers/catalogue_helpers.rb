@@ -207,27 +207,27 @@ class SonataCatalogue < Sinatra::Application
 						'purpose' => 'List stored log entries'
 				},
 				{
-						'uri' => '/network-services/id/{sdk_ns_id}',
+						'uri' => '/network-services/id/{id}',
 						'method' => 'GET',
 						'purpose' => 'List a specific NS'
 				},
 				{
-						'uri' => '/network-services/name/{external_ns_name}',
+						'uri' => '/network-services/name/{name}',
 						'method' => 'GET',
 						'purpose' => 'List a specific NS or specifics NS with common name'
 				},
 				{
-						'uri' => '/network-services/name/{external_ns_name}/version/{external_ns_version}',
+						'uri' => '/network-services/name/{name}/version/{version}',
 						'method' => 'GET',
 						'purpose' => 'List a specific NS by name and version'
 				},
 				{
-						'uri' => '/network-services/group/{external_ns_group}/name/{external_ns_name}/version/{external_ns_version}',
+						'uri' => '/network-services/vendor/{vendor}/name/{name}/version/{version}',
 						'method' => 'GET',
 						'purpose' => 'List a specific NS'
 				},
 				{
-						'uri' => '/network-services/name/{external_ns_name}/last',
+						'uri' => '/network-services/name/{name}/last',
 						'method' => 'GET',
 						'purpose' => 'List last version of specific NS by name'
 				},
@@ -237,12 +237,12 @@ class SonataCatalogue < Sinatra::Application
 						'purpose' => 'Store a new NS'
 				},
 				{
-						'uri' => '/network-services/{sdk_ns_id}',
+						'uri' => '/network-services/id/{id}',
 						'method' => 'PUT',
 						'purpose' => 'Update a stored NS'
 				},
 				{
-						'uri' => '/network-services/{sdk_ns_id}',
+						'uri' => '/network-services/id/{id}',
 						'method' => 'DELETE',
 						'purpose' => 'Delete a specific NS'
 				},
@@ -252,27 +252,27 @@ class SonataCatalogue < Sinatra::Application
 						'purpose' => 'List all VNFs'
 				},
 				{
-						'uri' => '/vnfs/name/{external_vnf_name}',
+						'uri' => '/vnfs/id/{id}',
+						'method' => 'GET',
+						'purpose' => 'List a specific VNF'
+				},
+				{
+						'uri' => '/vnfs/name/{name}',
 						'method' => 'GET',
 						'purpose' => 'List a specific VNF or specifics VNF with common name'
 				},
 				{
-						'uri' => '/vnfs/name/{external_vnf_name}/last',
+						'uri' => '/vnfs/name/{name}/last',
 						'method' => 'GET',
 						'purpose' => 'List a specific VNF'
 				},
 				{
-						'uri' => '/vnfs/name/{external_vnf_name}/version/{external_vnf_version}',
+						'uri' => '/vnfs/name/{name}/version/{version}',
 						'method' => 'GET',
 						'purpose' => 'List a specific VNF'
 				},
 				{
-						'uri' => '/vnfs/group/{external_vnf_group}/name/{external_vnf_name}/version/{external_vnf_version}',
-						'method' => 'GET',
-						'purpose' => 'List a specific VNF'
-				},
-				{
-						'uri' => '/vnfs/id/{sdk_vnf_id}',
+						'uri' => '/vnfs/vendor/{vendor}/name/{name}/version/{version}',
 						'method' => 'GET',
 						'purpose' => 'List a specific VNF'
 				},
@@ -282,12 +282,12 @@ class SonataCatalogue < Sinatra::Application
 						'purpose' => 'Store a new VNF'
 				},
 				{
-						'uri' => '/vnfs/id/{sdk_vnf_id}',
+						'uri' => '/vnfs/id/{id}',
 						'method' => 'PUT',
 						'purpose' => 'Update a stored VNF'
 				},
 				{
-						'uri' => '/vnfs/id/{sdk_vnf_id}',
+						'uri' => '/vnfs/id/{id}',
 						'method' => 'DELETE',
 						'purpose' => 'Delete a specific VNF'
 				}
