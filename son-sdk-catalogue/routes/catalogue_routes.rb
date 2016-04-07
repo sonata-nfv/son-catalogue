@@ -527,7 +527,7 @@ class SonataCatalogue < Sinatra::Application
 		#logger.error params[:external_ns_id]
 		begin
 			#ns = CatalogueModels.find( params[:external_ns_id] )
-			ns = Ns.find_by(params[:id] )
+			ns = Ns.find(params[:id] )
 		rescue Mongoid::Errors::DocumentNotFound => e
 			return 404,'ERROR: Operation failed'
 		end
