@@ -7,7 +7,7 @@ class SonataCatalogue < Sinatra::Application
 
 	before do
 
-		# Gatekeepr authn. code will go here for future implementation
+		# Gatekeeper authn. code will go here for future implementation
 		# --> Gatekeeper authn. disabled
 		#if request.path_info == '/gk_credentials'
 		#	return
@@ -94,7 +94,8 @@ class SonataCatalogue < Sinatra::Application
 		headers['Link'] = build_http_link_ns(params[:offset].to_i, params[:limit])
 
 		begin
-			nss_json = nss.to_json # to remove _id field from documents (:except => :_id)
+			#to remove _id field from documents (:except => :_id)
+			nss_json = nss.to_json(:except => [ :_id, :created_at, :updated_at ])
 			#puts 'NSS: ', nss_json
 			if request.content_type == 'application/json'
 				return 200, nss_json
@@ -125,7 +126,7 @@ class SonataCatalogue < Sinatra::Application
 			return 404
 		end
 
-		ns_json = ns.to_json
+		ns_json = ns.to_json(:except => [ :_id, :created_at, :updated_at ])
 		#puts 'NSS: ', nss_json
 		#return 200, ns.nsd.to_json
 		if request.content_type == 'application/json'
@@ -171,7 +172,7 @@ class SonataCatalogue < Sinatra::Application
 			logger.error e
 			return 404
 		end
-		ns_json = ns.to_json
+		ns_json = ns.to_json(:except => [ :_id, :created_at, :updated_at ])
 		if request.content_type == 'application/json'
 			return 200, ns_json
 		elsif request.content_type == 'application/x-yaml'
@@ -204,7 +205,7 @@ class SonataCatalogue < Sinatra::Application
 			return 404
 		end
 
-		ns_json = ns.to_json
+		ns_json = ns.to_json(:except => [ :_id, :created_at, :updated_at ])
 		if request.content_type == 'application/json'
 			return 200, ns_json
 		elsif request.content_type == 'application/x-yaml'
@@ -264,7 +265,7 @@ class SonataCatalogue < Sinatra::Application
 		end
 
 		#ns_json = ns.to_json
-		ns_json = ns_list.to_json
+		ns_json = ns_list.to_json(:except => [ :_id, :created_at, :updated_at ])
 		puts 'NS: ', ns_json
 
 		if request.content_type == 'application/json'
@@ -302,7 +303,7 @@ class SonataCatalogue < Sinatra::Application
 			return 404
 		end
 
-		ns_json = ns.to_json
+		ns_json = ns.to_json(:except => [ :_id, :created_at, :updated_at ])
 		if request.content_type == 'application/json'
 			return 200, ns_json
 		elsif request.content_type == 'application/x-yaml'
@@ -557,7 +558,7 @@ class SonataCatalogue < Sinatra::Application
 		headers['Link'] = build_http_link_vnf(params[:offset].to_i, params[:limit])
 
 		begin
-			vnfs_json = vnfs.to_json
+			vnfs_json = vnfs.to_json(:except => [ :_id, :created_at, :updated_at ])
 			#puts 'VNFS: ', vnfs_json
 
 			if request.content_type == 'application/json'
@@ -589,7 +590,7 @@ class SonataCatalogue < Sinatra::Application
 			halt 404
 		end
 
-		vnf_json = vnf.to_json
+		vnf_json = vnf.to_json(:except => [ :_id, :created_at, :updated_at ])
 		if request.content_type == 'application/json'
 			return 200, vnf_json
 		elsif request.content_type == 'application/x-yaml'
@@ -634,7 +635,7 @@ class SonataCatalogue < Sinatra::Application
 			logger.error e
 			return 404
 		end
-		vnf_json = vnf.to_json
+		vnf_json = vnf.to_json(:except => [ :_id, :created_at, :updated_at ])
 		if request.content_type == 'application/json'
 			return 200, vnf_json
 		elsif request.content_type == 'application/x-yaml'
@@ -667,7 +668,7 @@ class SonataCatalogue < Sinatra::Application
 			return 404
 		end
 
-		vnf_json = vnf.to_json
+		vnf_json = vnf.to_json(:except => [ :_id, :created_at, :updated_at ])
 		if request.content_type == 'application/json'
 			return 200, vnf_json
 		elsif request.content_type == 'application/x-yaml'
@@ -716,7 +717,7 @@ class SonataCatalogue < Sinatra::Application
 			return 404
 		end
 
-		vnf_json = vnf_list.to_json
+		vnf_json = vnf_list.to_json(:except => [ :_id, :created_at, :updated_at ])
 		puts 'VNF: ', vnf_json
 
 		if request.content_type == 'application/json'
@@ -747,7 +748,7 @@ class SonataCatalogue < Sinatra::Application
 			return 404
 		end
 
-		vnf_json = vnf.to_json
+		vnf_json = vnf.to_json(:except => [ :_id, :created_at, :updated_at ])
 		if request.content_type == 'application/json'
 			return 200, vnf_json
 		elsif request.content_type == 'application/x-yaml'
