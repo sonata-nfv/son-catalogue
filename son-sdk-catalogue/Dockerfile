@@ -3,7 +3,7 @@ RUN mkdir -p /app
 WORKDIR /app
 COPY Gemfile /app/
 COPY . /app
-RUN bundle install --quiet
+RUN bundle install
 RUN rake yard
 ENV PORT 4567
 EXPOSE 8808
