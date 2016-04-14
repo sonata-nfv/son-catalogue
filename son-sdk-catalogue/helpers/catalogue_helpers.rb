@@ -196,21 +196,41 @@ class SonataCatalogue < Sinatra::Application
 						'method' => 'GET',
 						'purpose' => 'REST API Structure and Capability Discovery'
 				},
+        {
+            'uri' => '/log',
+            'method' => 'GET',
+            'purpose' => 'List stored log entries'
+        },
 				{
 						'uri' => '/network-services',
 						'method' => 'GET',
 						'purpose' => 'List all NSs'
 				},
 				{
-						'uri' => '/network-services/log',
-						'method' => 'GET',
-						'purpose' => 'List stored log entries'
-				},
-				{
 						'uri' => '/network-services/id/{id}',
 						'method' => 'GET',
 						'purpose' => 'List a specific NS'
 				},
+        {
+            'uri' => '/network-services/vendor/{vendor}',
+            'method' => 'GET',
+            'purpose' => 'List a specific NS or specifics NS with common vendor'
+        },
+        {
+            'uri' => '/network-services/vendor/{vendor}/name/{name}',
+            'method' => 'GET',
+            'purpose' => 'List a specific NS or specifics NS with common vendor and name'
+        },
+        {
+            'uri' => '/network-services/vendor/{vendor}/name/{name}/version/{version}',
+            'method' => 'GET',
+            'purpose' => 'List a specific NS'
+        },
+        {
+            'uri' => '/network-services/vendor/{vendor}/last',
+            'method' => 'GET',
+            'purpose' => 'List last version of specifics NS by vendor'
+        },
 				{
 						'uri' => '/network-services/name/{name}',
 						'method' => 'GET',
@@ -219,17 +239,12 @@ class SonataCatalogue < Sinatra::Application
 				{
 						'uri' => '/network-services/name/{name}/version/{version}',
 						'method' => 'GET',
-						'purpose' => 'List a specific NS by name and version'
-				},
-				{
-						'uri' => '/network-services/vendor/{vendor}/name/{name}/version/{version}',
-						'method' => 'GET',
-						'purpose' => 'List a specific NS'
+						'purpose' => 'List a specifics NS by name and version'
 				},
 				{
 						'uri' => '/network-services/name/{name}/last',
 						'method' => 'GET',
-						'purpose' => 'List last version of specific NS by name'
+						'purpose' => 'List last version of specifics NS by name'
 				},
 				{
 						'uri' => '/network-services',
@@ -237,15 +252,25 @@ class SonataCatalogue < Sinatra::Application
 						'purpose' => 'Store a new NS'
 				},
 				{
-						'uri' => '/network-services/id/{id}',
+						'uri' => '/network-services/vendor/{vendor}/name/{name}/version/{version}',
 						'method' => 'PUT',
-						'purpose' => 'Update a stored NS'
+						'purpose' => 'Update a stored NS specifying its vendor.name.version'
 				},
+        {
+            'uri' => '/network-services/id/{id}',
+            'method' => 'PUT',
+            'purpose' => 'Update a stored NS specifying its ID'
+        },
 				{
-						'uri' => '/network-services/id/{id}',
+						'uri' => '/network-services/vendor/{vendor}/name/{name}/version/{version}',
 						'method' => 'DELETE',
-						'purpose' => 'Delete a specific NS'
+						'purpose' => 'Delete a specific NS specifying its vendor.name.version'
 				},
+        {
+            'uri' => '/network-services/id/{id}',
+            'method' => 'DELETE',
+            'purpose' => 'Delete a specific NS specifying its ID'
+        },
 				{
 						'uri' => '/vnfs',
 						'method' => 'GET',
@@ -256,41 +281,66 @@ class SonataCatalogue < Sinatra::Application
 						'method' => 'GET',
 						'purpose' => 'List a specific VNF'
 				},
+        {
+            'uri' => '/vnfs/vendor/{vendor}',
+            'method' => 'GET',
+            'purpose' => 'List a specific VNF or specifics VNF with common vendor'
+        },
+        {
+            'uri' => '/vnfs/vendor/{vendor}/name/{name}',
+            'method' => 'GET',
+            'purpose' => 'List a specific VNF or specifics VNF with common vendor and name'
+        },
+        {
+            'uri' => '/vnfs/vendor/{vendor}/name/{name}/version/{version}',
+            'method' => 'GET',
+            'purpose' => 'List a specific VNF'
+        },
+        {
+            'uri' => '/vnfs/vendor/{vendor}/last',
+            'method' => 'GET',
+            'purpose' => 'List last version of specifics VNF by vendor'
+        },
 				{
 						'uri' => '/vnfs/name/{name}',
 						'method' => 'GET',
 						'purpose' => 'List a specific VNF or specifics VNF with common name'
 				},
+        {
+            'uri' => '/vnfs/name/{name}/version/{version}',
+            'method' => 'GET',
+            'purpose' => 'List specifics VNF'
+        },
 				{
 						'uri' => '/vnfs/name/{name}/last',
 						'method' => 'GET',
-						'purpose' => 'List a specific VNF'
-				},
-				{
-						'uri' => '/vnfs/name/{name}/version/{version}',
-						'method' => 'GET',
-						'purpose' => 'List a specific VNF'
-				},
-				{
-						'uri' => '/vnfs/vendor/{vendor}/name/{name}/version/{version}',
-						'method' => 'GET',
-						'purpose' => 'List a specific VNF'
+						'purpose' => 'List last version of specifics VNF by name'
 				},
 				{
 						'uri' => '/vnfs',
 						'method' => 'POST',
 						'purpose' => 'Store a new VNF'
 				},
-				{
-						'uri' => '/vnfs/id/{id}',
-						'method' => 'PUT',
-						'purpose' => 'Update a stored VNF'
-				},
-				{
-						'uri' => '/vnfs/id/{id}',
-						'method' => 'DELETE',
-						'purpose' => 'Delete a specific VNF'
-				}
+        {
+            'uri' => '/vnfs/vendor/{vendor}/name/{name}/version/{version}',
+            'method' => 'PUT',
+            'purpose' => 'Update a stored VNF specifying its vendor.name.version'
+        },
+        {
+            'uri' => '/vnfs/id/{id}',
+            'method' => 'PUT',
+            'purpose' => 'Update a stored VNF specifying its ID'
+        },
+        {
+            'uri' => '/vnfs/vendor/{vendor}/name/{name}/version/{version}',
+            'method' => 'DELETE',
+            'purpose' => 'Delete a specific VNF specifying its vendor.name.version'
+        },
+        {
+            'uri' => '/vnfs/id/{id}',
+            'method' => 'DELETE',
+            'purpose' => 'Delete a specific VNF specifying its ID'
+        }
 		]
 	end
 
