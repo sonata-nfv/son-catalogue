@@ -156,7 +156,7 @@ class SonataCatalogue < Sinatra::Application
       logger.error e
       return 404
     end
-    ns_json = ns.to_json
+    ns_json = ns.to_json(:except => [ :_id, :created_at, :updated_at ])
     if request.content_type == 'application/json'
       return 200, ns_json
     elsif request.content_type == 'application/x-yaml'
@@ -186,7 +186,7 @@ class SonataCatalogue < Sinatra::Application
       return 404
     end
 
-    ns_json = ns.to_json
+    ns_json = ns.to_json(:except => [ :_id, :created_at, :updated_at ])
     if request.content_type == 'application/json'
       return 200, ns_json
     elsif request.content_type == 'application/x-yaml'
@@ -225,7 +225,7 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_nsd_ns_vendor_last_version
   # @overload get '/catalogues/network-services/vendor/:vendor/last'
-  #	Show a Package Vendor list for last version in JSON or YAML format
+  #	Show a NS Vendor list for last version in JSON or YAML format
   #	@param [String] vendor NS Vendor
   # Show a NS vendor
   get '/network-services/vendor/:vendor/last' do
@@ -235,11 +235,11 @@ class SonataCatalogue < Sinatra::Application
       ns = Ns.where({"vendor" => params[:vendor]}).sort({"version" => -1})#.limit(1).first()
 
       if ns.size.to_i == 0
-        logger.error "ERROR: PD not found"
+        logger.error "ERROR: NSD not found"
         return 404
 
       elsif ns == nil
-        logger.error "ERROR: PD not found"
+        logger.error "ERROR: NSD not found"
         return 404
 
       else
@@ -262,7 +262,7 @@ class SonataCatalogue < Sinatra::Application
       return 404
     end
 
-    ns_json = ns_list.to_json
+    ns_json = ns_list.to_json(:except => [ :_id, :created_at, :updated_at ])
     puts 'NSs: ', ns_json
 
     if request.content_type == 'application/json'
@@ -857,7 +857,7 @@ class SonataCatalogue < Sinatra::Application
       logger.error e
       return 404
     end
-    vnf_json = vnf.to_json
+    vnf_json = vnf.to_json(:except => [ :_id, :created_at, :updated_at ])
     if request.content_type == 'application/json'
       return 200, vnf_json
     elsif request.content_type == 'application/x-yaml'
@@ -887,7 +887,7 @@ class SonataCatalogue < Sinatra::Application
       return 404
     end
 
-    vnf_json = vnf.to_json
+    vnf_json = vnf.to_json(:except => [ :_id, :created_at, :updated_at ])
     if request.content_type == 'application/json'
       return 200, vnf_json
     elsif request.content_type == 'application/x-yaml'
@@ -963,7 +963,7 @@ class SonataCatalogue < Sinatra::Application
       return 404
     end
 
-    vnf_json = vnf_list.to_json
+    vnf_json = vnf_list.to_json(:except => [ :_id, :created_at, :updated_at ])
     puts 'VNFs: ', vnf_json
 
     if request.content_type == 'application/json'
@@ -1067,7 +1067,7 @@ class SonataCatalogue < Sinatra::Application
 			puts 'VNF SiZe: ', vnf.size.to_s
 
 			if vnf.size.to_i == 0
-				logger.error "ERROR: NSD not found"
+				logger.error "ERROR: VNFD not found"
 				return 404
 
 			elsif vnf == nil
@@ -1405,7 +1405,7 @@ class SonataCatalogue < Sinatra::Application
       return 404,'ERROR: Operation failed'
     end
     vnf.destroy
-    return 200, 'OK: NSD removed'
+    return 200, 'OK: VNFD removed'
   end
 
 	# @method delete_vnfd_sdk_vnf_id
