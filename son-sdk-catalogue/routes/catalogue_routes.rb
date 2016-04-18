@@ -64,10 +64,11 @@ class SonataCatalogue < Sinatra::Application
 	# Update a NS
 	# Get all interfaces
 	get '/' do
-		if request.content_type == 'application/x-yaml'
-			halt 200, interfaces_list.to_yaml
-		elsif request.content_type == 'application/json'
+		if request.content_type == 'application/json'
 			halt 200, interfaces_list.to_json
+    else
+      headers "Content-Type" => "text/plain; charset=utf8"
+			halt 200, interfaces_list.to_yaml
 		end
 	end
 
