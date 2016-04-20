@@ -1,5 +1,18 @@
 #!/bin/bash
 
+
+
+# +-----------------+
+# | Check arguments |
+# +-----------------+
+
+if [ $@ != 1 ]; then
+	echo "you must provide one argument, the name of the file containing the initial dataset for mongodb"
+	exit -1
+fi
+db_data = $1
+
+
 # +-----------------+
 # | Install MongoDB |
 # +-----------------+
@@ -69,6 +82,6 @@ echo "Restarting mongod service"
 sudo service mongod restart
 
 echo "Creating databases for catalogues"
-sudo sudo mongo --nodb dbs.js
+sudo sudo mongo --nodb $db_data
 
 echo "Installation completed"
