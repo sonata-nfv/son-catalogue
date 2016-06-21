@@ -30,7 +30,7 @@ mongo:
   restart: always
 
 mongoexpress:
-  image: knickers/mongo-express
+  image: mongo-express
   links:
     - mongo:mongo
   ports:
