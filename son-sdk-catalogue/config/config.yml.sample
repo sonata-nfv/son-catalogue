@@ -13,6 +13,6 @@ logstash_port: 5229
 
 nsd_validator: http://localhost:4015
 vnfd_validator: http://localhost:4570
-gk: http://192.168.2.19:8000
+gk: http://localhost:8000
 
 service_key: b12d3d96-3454-4744-9b2c-231f33b66a3e
