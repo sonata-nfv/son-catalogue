@@ -1,17 +1,17 @@
 [![Build Status](http://jenkins.sonata-nfv.eu/buildStatus/icon?job=son-sdk-catalogue)](http://jenkins.sonata-nfv.eu/job/son-sdk-catalogue)
 
 # SDK Catalogues
-This repository contains the development for the SDK catalogues. It holds the API implementation of SDK catalogue and repos. Moreover, is is closely related to the [son-catalogue-repos](https://github.com/sonata-nfv/son-catalogue-repos) repository that holds the catalogs of the SDK as well at the [son-schema](https://github.com/sonata-nfv/son-schema) repository that holds the schema for the various descriptors, such as the VNFD and the NSD.
+This repository contains the development for the SDK catalogues. It holds the API implementation of SDK catalogues for services and functions. Moreover, it is closely related to the [son-catalogue-repos](https://github.com/sonata-nfv/son-catalogue-repos) repository that holds the catalogues of the SONATA Service Platform as well at the [son-schema](https://github.com/sonata-nfv/son-schema) repository that holds the schema for the various descriptors, such as the VNFD and the NSD.
 
 The structure of this repository is as follows:
 
-* SON-SDK-CATALOGUE folder contains the SDK-CATALOGUE API to access to the VNF Catalogue and the NS Catalogue for the Software Development Kit.
+* SON-SDK-CATALOGUE folder contains the SDK-CATALOGUE API to access to the functions (VNF) Catalogue and the services (NS) Catalogue for the SONATA Software Development Kit (SDK).
 
 ## Development
 To contribute to the development of the SONATA editor, you may use the very same development workflow as for any other SONATA Github project. That is, you have to fork the repository and create pull requests.
 
 ### Dependencies
-Ruby gems used (for more details see Gemfile):
+Ruby gems used (for more details see Gemfile in son-sdk-catalogues folder):
 
 * [Sinatra](http://www.sinatrarb.com/) - Ruby framework
 * [Thin](https://github.com/macournoyer/thin/) - Web server
@@ -54,9 +54,9 @@ rake start
 ```
 For manual testings, please visit the wikipage link below which contains some information to interact and test the Catalogues API.
 
-* [Testing the code](http://wiki.sonata-nfv.eu/index.php/SONATA_Catalogues) - Inside SDK Catalogue API Documentation (It currently works for SP Catalogues)
+* [Testing the code](http://wiki.sonata-nfv.eu/index.php/SONATA_Catalogues) - Inside SDK Catalogue API Documentation (It currently works for SDK and SP Catalogues)
 
-The API documentation is expected to be generated with APIDOC soon. Further information can be found on SONATA's wikipages link for SONATA Catalogues:
+The API documentation is expected to be generated with Swagger soon. Further information can be found on SONATA's wikipages link for SONATA Catalogues:
 
 * [SONATA Catalogues](http://wiki.sonata-nfv.eu/index.php/SONATA_Catalogues) - SONATA Catalogues on wikipages
 
@@ -94,6 +94,6 @@ The following lead developers are responsible for this repository and have admin
 * Shuaib Siddiqui (shuaibsiddiqui)
 * Daniel Guija (dang03)
 
-#### Feedback-Chanel
+#### Feedback-Channel
 
 Please use the GitHub issues and the SONATA development mailing list sonata-dev@lists.atosresearch.eu for feedback.
