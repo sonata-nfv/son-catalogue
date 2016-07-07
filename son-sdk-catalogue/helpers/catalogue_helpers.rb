@@ -1,5 +1,5 @@
 ##
-## Copyright (c) 2015 SONATA-NFV , i2CAT Foundation
+## Copyright (c) 2015 SONATA-NFV, i2CAT Foundation
 ## ALL RIGHTS RESERVED.
 ##
 ## Licensed under the Apache License, Version 2.0 (the "License");
@@ -98,7 +98,7 @@ class SonataCatalogue < Sinatra::Application
       output_json = JSON.dump(input_yml)
       #output_json = JSON.dump(input_yml.to_json)
     rescue
-      logger.error "Error parsing from YAML to JSON"
+      logger.error 'Error parsing from YAML to JSON'
       end
 
     #puts 'Parsing DONE', output_json
@@ -117,7 +117,7 @@ class SonataCatalogue < Sinatra::Application
     begin
       output_yml = YAML.dump(JSON.parse(input_json))
     rescue
-      logger.error "Error parsing from JSON to YAML"
+      logger.error 'Error parsing from JSON to YAML'
       end
 
     output_yml

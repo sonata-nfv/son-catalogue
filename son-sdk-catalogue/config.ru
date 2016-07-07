@@ -1,5 +1,5 @@
 ##
-## Copyright (c) 2015 SONATA-NFV , i2CAT Foundation
+## Copyright (c) 2015 SONATA-NFV, i2CAT Foundation
 ## ALL RIGHTS RESERVED.
 ##
 ## Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +27,6 @@
 
 root = ::File.dirname(__FILE__)
 require ::File.join(root, 'main')
-#require 'sinatra/gk_auth' # <- Disabled
+# require 'sinatra/gk_auth' # <- Disabled
 
 run SonataCatalogue.new
