@@ -25,42 +25,20 @@
 ## acknowledge the contributions of their colleagues of the SONATA
 ## partner consortium (www.sonata-nfv.eu).
 
-source 'https://rubygems.org'
+# spec/spec_helper.rb
+require 'rack/test'
+require 'rspec'
+require 'webmock/rspec'
 
-# gem 'sinatra', '~>1.4'
-gem 'thin', '~>1.6'
-gem 'json', '~>1.8'
-gem 'sinatra', '~> 1.4.3', require: 'sinatra/base'
-gem 'sinatra-contrib', '~>1.4', require: false
-gem 'rake'
-# gem 'nokogiri', '~>1.6'
-gem 'json-schema', '~>2.5'
-gem 'rest-client', '~>1.8'
-#gem 'rubysl-securerandom', '~> 2.0'
-gem 'ci_reporter_rspec'
+ENV['RACK_ENV'] ||= 'test'
 
-group :development, :test do
-  gem 'webmock'
-	# gem 'rerun'
-  gem 'rspec'
-  gem 'rspec-mocks'
-  gem 'rack-test', require: 'rack/test'
-  gem 'rspec-its'
-	# gem 'database_cleaner'
-	# gem 'factory_girl'
-	gem 'rubocop'
-	gem 'rubocop-checkstyle_formatter', require: false
-  gem 'license_finder'
+WebMock.allow_net_connect!
+
+$LOAD_PATH << File.expand_path('../..', __FILE__)
+require './main'
+
+RSpec.configure do |config|
+  config.include Rack::Test::Methods
+  config.mock_with :rspec
+  config.include WebMock::API
 end
-
-group :doc do
-	gem 'yard', '~>0.8'
-end
-
-# Database
-gem 'mongoid', '~>4.0' # MongoDB driver
-gem 'mongoid-pagination', '~>0.2' # Pagination library
-#gem 'mongoid-versioning', '~>1.2' # Versioning library
-
-# Gatekeeper auth gem
-#gem 'sinatra-gkauth', '~>0.2.0', path: '../sinatra-gkauth-gem' # <- Disabled
