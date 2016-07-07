@@ -1,5 +1,5 @@
 ##
-## Copyright (c) 2015 SONATA-NFV , i2CAT Foundation
+## Copyright (c) 2015 SONATA-NFV, i2CAT Foundation
 ## ALL RIGHTS RESERVED.
 ##
 ## Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,6 @@ require 'pp'
 require 'rspec/its'
 
 RSpec.describe SonataCatalogue do
-
   def app
     @app ||= SonataCatalogue
   end
@@ -114,5 +113,4 @@ RSpec.describe SonataCatalogue do
       its(:status) { is_expected.to eq 200 }
     end
   end
-
 end
