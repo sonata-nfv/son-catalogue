@@ -409,7 +409,7 @@ class SonataCatalogue < Sinatra::Application
     # end
 
     begin
-      ns = Ns.find_by({'name' =>  ns['name'], 'vendor' => ns['vendor'], 'version' => ns['version']})
+      ns = Ns.find_by({'name' => ns['name'], 'vendor' => ns['vendor'], 'version' => ns['version']})
       halt 400, 'ERROR: Duplicated NS Name, Vendor and Version'
     rescue Mongoid::Errors::DocumentNotFound => e
       # Continue
