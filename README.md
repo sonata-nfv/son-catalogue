@@ -72,10 +72,10 @@ curl http://localhost:4011/vnfs
 To receive a descriptor by its ID:
 
 ```sh
-curl http://localhost:4011/network-services/9f18bc1b-b18d-483b-88da-a600e9255016
+curl http://localhost:4011/network-services/id/9f18bc1b-b18d-483b-88da-a600e9255016
 ```
 ```sh
-curl http://localhost:4011/vnfs/9f18bc1b-b18d-483b-88da-a600e9255017
+curl http://localhost:4011/vnfs/id/9f18bc1b-b18d-483b-88da-a600e9255017
 ```
 
 Method POST:
@@ -92,20 +92,20 @@ Method PUT:
 To update a descriptor is similar to the POST method, but it is required that a older version of the descriptor is stored in the Catalogue
 
 ```sh
-curl -X POST --data-binary @nsd_sample.yaml -H "Content-type:application/x-yaml" http://localhost:4011/network-services
+curl -X POST --data-binary @nsd_sample.yaml -H "Content-type:application/x-yaml" http://localhost:4011/network-services/id/9f18bc1b-b18d-483b-88da-a600e9255016
 ```
 ```sh
-curl -X POST --data-binary @vnfd_sample.yaml -H "Content-type:application/x-yaml" http://localhost:4011/vnfs
+curl -X POST --data-binary @vnfd_sample.yaml -H "Content-type:application/x-yaml" http://localhost:4011/vnfs/id/9f18bc1b-b18d-483b-88da-a600e9255017
 ```
 
 Method DELETE:
 To remove a descriptor by its ID
 
 ```sh
-curl -X DELETE http://localhost:4011/network-services/9f18bc1b-b18d-483b-88da-a600e9255016
+curl -X DELETE http://localhost:4011/network-services/id/9f18bc1b-b18d-483b-88da-a600e9255016
 ```
 ```sh
-curl -X DELETE http://localhost:4011/vnfs/9f18bc1b-b18d-483b-88da-a600e9255017
+curl -X DELETE http://localhost:4011/vnfs/id/9f18bc1b-b18d-483b-88da-a600e9255017
 ```
 
 For more information about usage of Catalogue, please visit the wikipage link below which contains some information to interact and test the Catalogues API.
