@@ -37,7 +37,7 @@ desc 'Start the service'
 task :start do
   puts 'SON-CATALOGUE STARTING...'
   conf = File.expand_path('config.ru', File.dirname(__FILE__))
-  exec("rackup #{conf} -p 4011")
+  exec("puma #{conf} -b tcp://0.0.0.0:4011")
 end
 
 RSpec::Core::RakeTask.new :specs do |task|
