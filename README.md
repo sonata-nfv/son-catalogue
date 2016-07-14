@@ -14,7 +14,7 @@ To contribute to the development of the SONATA editor, you may use the very same
 Ruby gems used (for more details see Gemfile in son-sdk-catalogues folder):
 
 * [Sinatra](http://www.sinatrarb.com/) - Ruby framework
-* [Thin](https://github.com/macournoyer/thin/) - Web server
+* [puma](http://puma.io/) - Web server
 * [json](https://github.com/flori/json) - JSON specification
 * [sinatra-contrib](https://github.com/sinatra/sinatra-contrib) - Sinatra extensions
 * [rake](http://rake.rubyforge.org/) - Ruby build program with capabilities similar to make
@@ -60,6 +60,7 @@ For testing the Catalogue, you can use 'curl' tool to send a request to the API.
 Remember to set the IP address and port accordingly.
 
 Method GET:
+
 To receive all descriptors you can use
 
 ```sh
@@ -79,6 +80,7 @@ curl http://localhost:4011/vnfs/id/9f18bc1b-b18d-483b-88da-a600e9255017
 ```
 
 Method POST:
+
 To send a descriptor
 
 ```sh
@@ -89,6 +91,7 @@ curl -X POST --data-binary @vnfd_sample.yaml -H "Content-type:application/x-yaml
 ```
 
 Method PUT:
+
 To update a descriptor is similar to the POST method, but it is required that a older version of the descriptor is stored in the Catalogue
 
 ```sh
@@ -99,6 +102,7 @@ curl -X POST --data-binary @vnfd_sample.yaml -H "Content-type:application/x-yaml
 ```
 
 Method DELETE:
+
 To remove a descriptor by its ID
 
 ```sh
