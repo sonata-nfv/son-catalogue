@@ -11,6 +11,14 @@ The structure of this repository is as follows:
 To contribute to the development of the SONATA editor, you may use the very same development workflow as for any other SONATA Github project. That is, you have to fork the repository and create pull requests.
 
 ### Dependencies
+It is recommended to use Ubuntu 14.04.4 LTS (Trusty Tahr).
+
+This code has been run on Ruby 2.1.
+
+MongoDB is required, this code has been run using MongoDB version 3.2.1.
+
+Root folder provides a script "installation_mongodb.sh" to install and set up MongoDB.
+
 Ruby gems used (for more details see Gemfile in son-sdk-catalogues folder):
 
 * [Sinatra](http://www.sinatrarb.com/) - Ruby framework
@@ -36,15 +44,6 @@ bundle install
 ```
 
 It will install all the gems needed to run the SON-CATALOGUE API.
-
-### Dependencies
-It is recommended to use Ubuntu 14.04.4 LTS (Trusty Tahr).
-
-This code has been run on Ruby 2.1.
-
-MongoDB is required, this code has been run using MongoDB version 3.2.1.
-
-Root folder provides a script "installation_mongodb.sh" to install and set up MongoDB.
 
 ## Usage
 The following shows how to start the Catalogue API server:
