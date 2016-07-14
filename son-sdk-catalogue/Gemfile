@@ -28,7 +28,8 @@
 source 'https://rubygems.org'
 
 # gem 'sinatra', '~>1.4'
-gem 'thin', '~>1.6'
+gem 'puma'
+#gem 'thin', '~>1.6'
 gem 'json', '~>1.8'
 gem 'sinatra', '~> 1.4.3', require: 'sinatra/base'
 gem 'sinatra-contrib', '~>1.4', require: false
