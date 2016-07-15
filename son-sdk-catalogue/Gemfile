@@ -14,7 +14,7 @@
 ## See the License for the specific language governing permissions and
 ## limitations under the License.
 ##
-## Neither the name of the SONATA-NFV [, ANY ADDITIONAL AFFILIATION]
+## Neither the name of the SONATA-NFV, i2CAT Foundation
 ## nor the names of its contributors may be used to endorse or promote
 ## products derived from this software without specific prior written
 ## permission.
@@ -28,7 +28,8 @@
 source 'https://rubygems.org'
 
 # gem 'sinatra', '~>1.4'
-gem 'thin', '~>1.6'
+gem 'puma'
+#gem 'thin', '~>1.6'
 gem 'json', '~>1.8'
 gem 'sinatra', '~> 1.4.3', require: 'sinatra/base'
 gem 'sinatra-contrib', '~>1.4', require: false
