@@ -71,7 +71,7 @@ class Vnf
 end
 
 # Sonata class for Catalogue Services
-# class Vnf_Ns_map
+# class Vnf_Ns_map ## Temporary name
 #  include Mongoid::Document
 #  include Mongoid::Timestamps
 #  include Mongoid::Pagination
