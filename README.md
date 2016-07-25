@@ -138,7 +138,7 @@ And they can be viewed from http://localhost:8808/
 
 The SONATA SDK Catalogue is published under Apache 2.0 license. Please see the LICENSE file for more details.
 
-#### Useful Links
+## Useful Links
 
 To support working and testing with the son-catalogue database it is optional to use next tools:
 
