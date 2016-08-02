@@ -431,6 +431,15 @@ class SonataCatalogue < Sinatra::Application
       halt 400, 'ERROR: Duplicated NS ID' if e.message.include? 'E11000'
     end
 
+    # Save dependencies (VNFs) to DB
+    # vnfs = ns['network_functions']
+    # for vnf in vnfs
+    #   vnf[vnf_id]
+    #   vnf[vnf_group]
+    #   vnf[vnf_name]
+    #   vnf[vnf_version]
+    #   Map.create()
+
     puts 'New NSD has been added'
     ns_json = new_ns.to_json
     if request.content_type == 'application/json'
