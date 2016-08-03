@@ -1,0 +1,158 @@
+---
+# This is a Work-in-progress Swagger Specification for Catalogue API
+# as an API spec in YAML
+swagger: '2.0'
+info:
+  title: SON-CATALOGUE
+  description: |
+    #### Main methods for management
+    These methods are intended to provide information about the Catalogue's API and management.
+    Feel free to make a path or an operation and use **Try Operation** to test it.
+  version: 0.9.0
+# the domain of the service
+# host: api.int.sonata-nfv.eu:4012
+host: 0.0.0.0:4011
+# will be prefixed to all paths
+basePath: /
+# array of all schemes that your API supports
+schemes:
+  - http
+consumes:
+  - application/json
+  - text/xml
+produces:
+  - application/json
+  - application/x-yaml
+  - text/html
+paths:
+  /:
+    get:
+      responses:
+        200:
+          description: Get all available interfaces in JSON or YAML format
+  /log:
+    get:
+      responses:
+        200:
+          description: Management method to get log file of catalogue remotely
+  /network-services:
+    get:
+      summary: Network Services
+      description: |
+        The Network Services endpoint returns information about the descriptors
+        stored at the network services catalogue. The response matches and includes the ns-schema fields,
+        and lists the descriptors.
+      parameters:
+        - name: vendor
+          in: query
+          description: Will identify the NS uniquely across all NS vendors. It should at least be comprised of the
+          reverse domain name that is under your controll. Moreover, it might have as many sub-groups as needed.
+          required: true
+          type: string
+        - name: name
+          in: query
+          description: Is the name of the NS without its version. It can be created with any name written in lower
+          letters and no strange symbols.
+          required: true
+          type: string
+        - name: version
+          in: query
+          description: Names the version of the NS descritor. Any typical version with numbers and dots,
+          such as 1.0, 1.1, and 1.0.1 is allows here. The NS version must be increased with any new (changed) instance
+          of the network function descriptor.
+          required: true
+          type: string
+      tags:
+        - NSD
+      responses:
+        200:
+          description: An array of nsd
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Ns'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /vnfs:
+    get:
+      summary: Virtual Network Functions
+      description: |
+        The Virtual Network Functions endpoint returns information about the descriptors
+        stored at the virtual network functions catalogue. The response matches and includes the vnf-schema fields,
+        and lists the descriptors.
+      parameters:
+        - name: vendor
+          in: query
+          description: Will identify the VNF uniquely across all VNF vendors. It should at least be comprised
+          of the reverse domain name that is under your controll. Moreover, it might have as many sub-groups as needed.
+          required: true
+          type: string
+        - name: name
+          in: query
+          description: Is the name of the VNF without its version. It can be created with any name written in
+          lower letters and no strange symbols.
+          required: true
+          type: string
+        - name: version
+          in: query
+          description: Names the version of the VNF descritor. Any typical version with numbers and dots, such as 1.0,
+          1.1, and 1.0.1 is allows here. The VNF version must be increased with any new (changed) instance
+          of the network function descriptor.
+          required: true
+          type: string
+      tags:
+        - VNFD
+      responses:
+        200:
+          description: An array of vnfds
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Vnf'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
+  Ns:
+    type: object
+    properties:
+      uuid:
+        type: string
+        description: Unique identifier
+      vendor:
+        type: string
+        description: As part of the primary key, the vendor parameter identifies the NSD.
+      name:
+        type: string
+        description: As part of the primary key, the name parameter identifies the NSD.
+      version:
+        type: string
+        description: As part of the primary key, the version parameter identifies the NSD.
+  Vnf:
+    type: object
+    properties:
+      uuid:
+        type: string
+        description: Unique identifier
+      vendor:
+        type: string
+        description: As part of the primary key, the vendor parameter identifies the VNFD.
+      name:
+        type: string
+        description: As part of the primary key, the name parameter identifies the VNFD.
+      version:
+        type: string
+        description: As part of the primary key, the version parameter identifies the VNFD.

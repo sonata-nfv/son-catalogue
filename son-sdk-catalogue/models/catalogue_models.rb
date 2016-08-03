@@ -69,3 +69,18 @@ class Vnf
 
   validates :vendor, :name, :version, :presence => true
 end
+
+# Sonata class for Catalogue Services
+# class Vnf_Ns_map ## Temporary name
+#  include Mongoid::Document
+#  include Mongoid::Timestamps
+#  include Mongoid::Pagination
+#  include Mongoid::Attributes::Dynamic
+#  store_in session: 'map_db'
+
+#  field :vendor, type: String
+#  field :name, type: String
+#  field :version, type: String
+
+#  validates :vendor, :name, :version, :presence => true
+# end
