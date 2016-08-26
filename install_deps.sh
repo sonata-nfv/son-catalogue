@@ -37,6 +37,11 @@ echo "Started installation of dependencies"
 sudo apt-get install -y ruby
 sudo apt-get install -y libpq-dev
 
+# Install RVM and dependencies
+sudo apt-get install -y curl
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+\curl -sSL https://get.rvm.io | bash -s stable --ruby=2.2.3
+
 # Install RubyGems version 2.6.6 (optional)
 #sudo wget http://production.cf.rubygems.org/rubygems/rubygems-2.6.6.tgz
 #sudo tar xvf rubygems-2.6.6.tgz
