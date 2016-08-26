@@ -36,11 +36,11 @@ echo "Started installation of dependencies"
 # Install Ruby on system
 sudo apt-get install -y ruby
 
-# Install RubyGems version 2.6.6
-sudo wget http://production.cf.rubygems.org/rubygems/rubygems-2.6.6.tgz
-sudo tar xvf rubygems-2.6.6.tgz
-sudo ruby rubygems-2.6.6/setup.rb
-sudo rm rubygems-2.6.6.tgz
+# Install RubyGems version 2.6.6 (optional)
+#sudo wget http://production.cf.rubygems.org/rubygems/rubygems-2.6.6.tgz
+#sudo tar xvf rubygems-2.6.6.tgz
+#sudo ruby rubygems-2.6.6/setup.rb
+#sudo rm rubygems-2.6.6.tgz
 
 # +--------------------------+
 # | Install Gem dependencies |
