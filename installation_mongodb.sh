@@ -94,8 +94,9 @@ sudo update-rc.d disable-transparent-hugepages defaults
 
 echo "Restarting mongod service"
 sudo service mongod restart
+sleep 2
 
 echo "Creating databases for catalogues"
-sudo sudo mongo --nodb dbs.js
+sudo mongo --nodb dbs.js
 
 echo "Installation completed"
