@@ -32,7 +32,8 @@
  * with the next command from prompt:
  * sudo mongo --nodb dbs.js
  *
- * If the MongoDB is not found in localhost or is located on a different
+ * Set the location of MongoDB: If the MongoDB is found on a docker
+ * named 'mongo' or in localhost, or if it is located on a different
  * port, then change "localhost:27017" accordingly from each 'connect'
  * command to the "ip_address:port" where MongoDB is installed/located.
  * Mongo Shell is required on local machine to apply script on remote a
