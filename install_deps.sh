@@ -35,6 +35,7 @@ echo "Started installation of dependencies"
 
 # Install Ruby on system
 sudo apt-get install -y ruby
+sudo apt-get install -y libpq-dev
 
 # Install RubyGems version 2.6.6 (optional)
 #sudo wget http://production.cf.rubygems.org/rubygems/rubygems-2.6.6.tgz
