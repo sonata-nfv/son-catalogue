@@ -12,7 +12,6 @@ development:
       database: ns_catalogue
       hosts:
       - mongo:27017
-      #- 127.0.0.1:27017
       user:
       password:
 
@@ -20,7 +19,13 @@ development:
       database: vnf_catalogue
       hosts:
       - mongo:27017
-      #- 127.0.0.1:27017
+      user:
+      password:
+
+    map_db:
+      database: vnf_catalogue
+      hosts:
+      - mongo:27017
       user:
       password:
 
