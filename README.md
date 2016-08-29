@@ -35,9 +35,11 @@ Ruby gems used (for more details see Gemfile in son-sdk-catalogues folder):
 You may contribute to the editor similar to other SONATA (sub-) projects, i.e. by creating pull requests.
 
 ## Installation
-Before installing the Catalogues API from source code, it is recommended to install a fresh MongoDB database. It can be done with the "installation_mongodb.sh" script provided in the root folder. This script installs MongoDB and uses the "dbs.js" script to build a database structure in the MongoDB for each catalogue. The default IP address for local development environment is 'localhost:27017'. However, if the MongoDB is already installed, "dbs.js" script can be used standalone, just follow the instructions inside the file. If the MongoDB is found remotely, then the "dbs.js" script needs to be changed according to the IP and Port address of the MongoDB.
+First step to install the Catalogues is to clone the source code from the repository.
+Before running the Catalogues API from source code, it is recommended to install a fresh MongoDB database. It can be done with the "installation_mongodb.sh" script provided in the root folder. This script installs MongoDB and uses the "dbs.js" script to build a database structure in the MongoDB for each catalogue. The default IP address for local development environment is 'localhost:27017'. However, if the MongoDB is already installed, "dbs.js" script can be used standalone, just follow the instructions inside the file. If the MongoDB is found remotely, then the "dbs.js" script needs to be changed according to the IP and Port address of the MongoDB.
+Next step is to install dependencies required by the Catalogue API. Run "install_deps.sh" script found in the same folder to install Ruby required libraries. 
 
-For the Catalogues, after cloning the source code from the repository, you can run:
+Once installed previous requirements, you can run to install required gems:
 
 ```sh
 bundle install
