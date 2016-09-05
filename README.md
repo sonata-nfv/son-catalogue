@@ -36,6 +36,17 @@ You may contribute to the editor similar to other SONATA (sub-) projects, i.e. b
 
 ## Installation
 First step to install the Catalogues is to clone the source code from the repository.
+SDK Catalogue can be installed in two different ways: using Docker containers or without Docker.
+
+### Installing with Docker
+For this installation Docker Compose is first required. It is required to install Docker Engine in order to use Docker Compose. You can follow the instructions in https://docs.docker.com/compose/install/ to do so.
+Once this requirement is meet, you can start installation with the next command:
+
+```sh
+docker-compose up -d
+```
+
+### Installing without Docker
 Before running the Catalogues API from source code, it is recommended to install a fresh MongoDB database. It can be done with the "installation_mongodb.sh" script provided in the root folder. 
 
 ```sh
