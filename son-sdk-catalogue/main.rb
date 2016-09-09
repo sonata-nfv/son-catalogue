@@ -45,7 +45,7 @@ require_relative 'helpers/init'
 configure do
 	# Configuration for logging
 	enable :logging
-	Dir.mkdir("#{settings.root}/log") unless File.exists?("#{settings.root}/log")
+	Dir.mkdir("#{settings.root}/log") unless File.exist?("#{settings.root}/log")
 	log_file = File.new("#{settings.root}/log/#{settings.environment}.log", 'a+')
 	log_file.sync = true
 	use Rack::CommonLogger, log_file
