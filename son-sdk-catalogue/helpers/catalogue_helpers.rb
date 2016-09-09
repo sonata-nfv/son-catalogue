@@ -40,7 +40,7 @@ class SonataCatalogue < Sinatra::Application
       puts config['port']
     rescue YAML::LoadError => e
       # If config file is not found or valid, return with errors
-      logger.error "read config error: #{e.to_s}"
+      logger.error "read config error: #{e}"
     end
 
     return config['address'], config['port']
@@ -57,7 +57,7 @@ class SonataCatalogue < Sinatra::Application
       parsed_message = JSON.parse(message) # parse json message
     rescue JSON::ParserError => e
       # If JSON not valid, return with errors
-      logger.error "JSON parsing: #{e.to_s}"
+      logger.error "JSON parsing: #{e}"
       return message, e.to_s + "\n"
     end
 
@@ -76,7 +76,7 @@ class SonataCatalogue < Sinatra::Application
       #puts 'PARSED_MESSAGE: ', parsed_message.to_yaml
     rescue YAML::ParserError => e
       # If YAML not valid, return with errors
-      logger.error "YAML parsing: #{e.to_s}"
+      logger.error "YAML parsing: #{e}"
       return message, e.to_s + "\n"
     end
 
