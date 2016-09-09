@@ -43,7 +43,7 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_log
   # @overload get '/log'
-  #	Returns contents of log file
+  #	  Returns contents of log file
   # Management method to get log file of catalogue remotely
   get '/log' do
     filename = 'log/development.log'
@@ -63,7 +63,7 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_root
   # @overload get '/'
-  # Get all available interfaces in JSON or YAML format
+  #   Get all available interfaces in JSON or YAML format
   # Get all interfaces
   get '/' do
     if request.content_type == 'application/json'
@@ -78,7 +78,7 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_nss
   # @overload get '/network-services'
-  #	Returns a list of NSs
+  #	  Returns a list of NSs
   # List all NSs in JSON or YAML format
   get '/network-services' do
     params[:offset] ||= DEFAULT_OFFSET
@@ -110,8 +110,8 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_ns_sdk_ns_id
   # @overload get '/network-services/id/:sdk_ns_id'
-  #	Show a NS in JSON or YAML format
-  #	@param [String] sdk_ns_id NS SDK ID
+  #	  Show a NS in JSON or YAML format
+  #	  @param [String] sdk_ns_id NS SDK ID
   # Show a NS by internal ID (group.name.version)
   get '/network-services/id/:id' do
     begin
@@ -133,8 +133,8 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_ns_sdk_vendor
   # @overload get '/catalogues/network-services/vendor/:vendor'
-  #	Returns an array of all NS by vendor in JSON or YAML format
-  #	@param [String] ns_vendor NS vendor
+  #	  Returns an array of all NS by vendor in JSON or YAML format
+  #	  @param [String] ns_vendor NS vendor
   # Show a NS vendor
   get '/network-services/vendor/:vendor' do
     begin
@@ -160,10 +160,10 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_Nss_NS_vendor.name
   # @overload get '/catalogues/network-services/vendor/:vendor/name/:name'
-  #	Returns an array of all NS by vendor and name in JSON or YAML format
-  #	@param [String] ns_group NS vendor
-  # Show a NS vendor
-  #	@param [String] ns_name NS Name
+  #	  Returns an array of all NS by vendor and name in JSON or YAML format
+  #	  @param [String] ns_group NS vendor
+  #   Show a NS vendor
+  #	  @param [String] ns_name NS Name
   # Show a NS name
   get '/network-services/vendor/:vendor/name/:name' do
     begin
@@ -190,12 +190,12 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_nsd_ns_vendor.name.version
   # @overload get '/network-services/vendor/:vendor/name/:name/version/:version'
-  #	Show a specific NS in JSON or YAML format
-  #	@param [String] vendor NS external Vendor
-  # Show a NS vendor
-  #	@param [String] name NS external Name
-  # Show a NS name
-  #	@param [Integer] version NS version
+  #	  Show a specific NS in JSON or YAML format
+  #	  @param [String] vendor NS external Vendor
+  #   Show a NS vendor
+  #	  @param [String] name NS external Name
+  #   Show a NS name
+  #	  @param [Integer] version NS version
   # Show a NS version
   get '/network-services/vendor/:vendor/name/:name/version/:version' do
     begin
@@ -218,8 +218,8 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_nsd_ns_vendor_last_version
   # @overload get '/catalogues/network-services/vendor/:vendor/last'
-  #	Show a NS Vendor list for last version in JSON or YAML format
-  #	@param [String] vendor NS Vendor
+  #	  Show a NS Vendor list for last version in JSON or YAML format
+  #	  @param [String] vendor NS Vendor
   # Show a NS vendor
   get '/network-services/vendor/:vendor/last' do
     # Search and get all NS items by vendor
@@ -263,8 +263,8 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_nss_ns_name
   # @overload get '/network-services/:external_ns_name'
-  #	Show a NS or NS list in JSON or YAML format
-  #	@param [String] external_ns_name NS external Name
+  #	  Show a NS or NS list in JSON or YAML format
+  #	  @param [String] external_ns_name NS external Name
   # Show a NS by name
   get '/network-services/name/:name' do
     begin
@@ -290,10 +290,10 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_nsd_external_ns_version
   # @overload get '/network-services/:external_ns_name/version/:version'
-  #	Show a NS list in JSON or YAML format
-  #	@param [String] external_ns_name NS external Name
-  # Show a NS name
-  #	@param [Integer] external_ns_version NS version
+  #	  Show a NS list in JSON or YAML format
+  #	  @param [String] external_ns_name NS external Name
+  #   Show a NS name
+  #	  @param [Integer] external_ns_version NS version
   # Show a NS version
   get '/network-services/name/:name/version/:version' do
     begin
@@ -319,8 +319,8 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_nsd_external_ns_last_version
   # @overload get '/network-services/name/:external_ns_name/last'
-  #	Show a NS list for last version in JSON or YAML format
-  #	@param [String] external_ns_name NS external Name
+  #	  Show a NS list for last version in JSON or YAML format
+  #	  @param [String] external_ns_name NS external Name
   # Show a NS name
   get '/network-services/name/:name/last' do
     # Search and get all items of NS by name
@@ -365,10 +365,10 @@ class SonataCatalogue < Sinatra::Application
 
   # @method post_nss
   # @overload post '/network-services'
-  # Post a NS in JSON or YAML format
-  # @param [YAML] NS in YAML format
-  # Post a NSD
-  # @param [JSON] NS in JSON format
+  #   Post a NS in JSON or YAML format
+  #   @param [YAML] NS in YAML format
+  #   Post a NSD
+  #   @param [JSON] NS in JSON format
   # Post a NSD
   post '/network-services' do
     # Return if content-type is invalid
@@ -454,12 +454,12 @@ class SonataCatalogue < Sinatra::Application
 
   # @method update_nss_version_name_version
   # @overload put '/network-services/vendor/:vendor/name/:name/version/:version'
-  # Update a NS by vendor, name and version in JSON or YAML format
-  #	@param [String] NS_vendor NS vendor
-  # Update a NS vendor
-  #	@param [String] NS_name NS Name
-  # Update a NS name
-  #	@param [Integer] NS_version NS version
+  #   Update a NS by vendor, name and version in JSON or YAML format
+  #	  @param [String] NS_vendor NS vendor
+  #   Update a NS vendor
+  #	  @param [String] NS_name NS Name
+  #   Update a NS name
+  #	  @param [Integer] NS_version NS version
   # Update a NS version
   ## Catalogue - UPDATE
   put '/network-services/vendor/:vendor/name/:name/version/:version' do
@@ -544,10 +544,10 @@ class SonataCatalogue < Sinatra::Application
 
   # @method update_nss
   # @overload put '/network-services/id/:sdk_ns_id'
-  # Update a NS in JSON or YAML format
-  # @param [YAML] NS in YAML format
-  # Update a NS
-  # @param [JSON] NS in JSON format
+  #   Update a NS in JSON or YAML format
+  #   @param [YAML] NS in YAML format
+  #   Update a NS
+  #   @param [JSON] NS in JSON format
   # Update a NS
   ## Catalogue - UPDATE
   put '/network-services/id/:id' do
@@ -633,12 +633,12 @@ class SonataCatalogue < Sinatra::Application
 
   # @method delete_nsd_external_ns_id
   # @overload delete '/network-services/vendor/:vendor/name/:name/version/:version'
-  #	Delete a NS by vendor, name and version in JSON or YAML format
-  #	@param [String] NS_vendor NS vendor
-  # Delete a NS by group
-  #	@param [String] ns_name NS Name
-  # Delete a NS by name
-  #	@param [Integer] ns_version NS version
+  #	  Delete a NS by vendor, name and version in JSON or YAML format
+  #	  @param [String] NS_vendor NS vendor
+  #   Delete a NS by group
+  #	  @param [String] ns_name NS Name
+  #   Delete a NS by name
+  #	  @param [Integer] ns_version NS version
   # Delete a NS by version
   delete '/network-services/vendor/:vendor/name/:name/version/:version' do
     begin
@@ -652,8 +652,8 @@ class SonataCatalogue < Sinatra::Application
 
   # @method delete_nsd_external_ns_id
   # @overload delete '/network-service/id/:external_ns_id'
-  #	Delete a NS by its ID
-  #	@param [String] external_ns_id NS external ID
+  #	  Delete a NS by its ID
+  #	  @param [String] external_ns_id NS external ID
   # Delete a NS
   delete '/network-services/id/:id' do
     begin
@@ -669,7 +669,7 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_vnfs
   # @overload get '/vnfs'
-  #	Returns a list of VNFs
+  #	  Returns a list of VNFs
   # List all VNFs in JSON or YAML format
   get '/vnfs' do
     params[:offset] ||= DEFAULT_OFFSET
@@ -703,8 +703,8 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_vnfs_id
   # @overload get '/vnfs/id/:id'
-  #	Show a VNF in JSON or YAML format
-  #	@param [String] id VNF ID
+  #	  Show a VNF in JSON or YAML format
+  #	  @param [String] id VNF ID
   # Show a VNF by internal ID (group.name.version)
   get '/vnfs/id/:id' do
     begin
@@ -726,8 +726,8 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_vnf_sdk_vendor
   # @overload get '/catalogues/vnfs/vendor/:vendor'
-  #	Returns an array of all VNF by vendor in JSON or YAML format
-  #	@param [String] vnf_vendor VNF vendor
+  #	  Returns an array of all VNF by vendor in JSON or YAML format
+  #	  @param [String] vnf_vendor VNF vendor
   # Show a VNF vendor
   get '/vnfs/vendor/:vendor' do
     begin
@@ -753,10 +753,10 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_vnfs_vnf_vendor.name
   # @overload get '/catalogues/vnfs/vendor/:vendor/name/:name'
-  #	Returns an array of all VNF by vendor and name in JSON or YAML format
-  #	@param [String] vnf_group VNF vendor
-  # Show a VNF vendor
-  #	@param [String] vnf_name VNF Name
+  #	  Returns an array of all VNF by vendor and name in JSON or YAML format
+  #	  @param [String] vnf_group VNF vendor
+  #   Show a VNF vendor
+  #	  @param [String] vnf_name VNF Name
   # Show a VNF name
   get '/vnfs/vendor/:vendor/name/:name' do
     begin
@@ -782,12 +782,12 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_vnfd_external_vnf_group.name.version
   # @overload get '/vnfs/group/:external_vnf_group/name/:external_vnf_name/version/:version'
-  #	Show a specific VNF in JSON or YAML format
-  #	@param [String] external_vnf_group VNF external Group
-  # Show a VNF group
-  #	@param [String] external_vnf_name VNF external Name
-  # Show a VNF name
-  #	@param [Integer] external_vnf_version VNF version
+  #	  Show a specific VNF in JSON or YAML format
+  #	  @param [String] external_vnf_group VNF external Group
+  #   Show a VNF group
+  #	  @param [String] external_vnf_name VNF external Name
+  #   Show a VNF name
+  #	  @param [Integer] external_vnf_version VNF version
   # Show a VNF version
   get '/vnfs/vendor/:vendor/name/:name/version/:version' do
     begin
@@ -809,8 +809,8 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_vnfs_vnf_vendor_last_version
   # @overload get '/catalogues/vnfs/vendor/:vendor/last'
-  #	Show a VNF Vendor list for last version in JSON or YAML format
-  #	@param [String] vendor VNF Vendor
+  #	  Show a VNF Vendor list for last version in JSON or YAML format
+  #	  @param [String] vendor VNF Vendor
   # Show a VNF vendor
   get '/vnfs/vendor/:vendor/last' do
     # Search and get all VNF items by vendor
@@ -852,8 +852,8 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_vnfs_vnf_name
   # @overload get '/vnfs/name/:vnf_name'
-  #	Show a VNF or VNF list in JSON or YAML format
-  #	@param [String] vnf_name VNF external Name
+  #	  Show a VNF or VNF list in JSON or YAML format
+  #	  @param [String] vnf_name VNF external Name
   # Show a VNF by name
   get '/vnfs/name/:name' do
     begin
@@ -879,10 +879,10 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_vnfd_external_vnf_version
   # @overload get '/vnfs/name/:external_vnf_name/version/:version'
-  #	Show a VNF list in JSON or YAML format
-  #	@param [String] external_vnf_name VNF external Name
-  # Show a VNF name
-  #	@param [Integer] external_vnf_version VNF version
+  #	  Show a VNF list in JSON or YAML format
+  #	  @param [String] external_vnf_name VNF external Name
+  #   Show a VNF name
+  #	  @param [Integer] external_vnf_version VNF version
   # Show a VNF version
   get '/vnfs/name/:name/version/:version' do
     begin
@@ -908,8 +908,8 @@ class SonataCatalogue < Sinatra::Application
 
   # @method get_vnfd_external_vnf_last_version
   # @overload get '/vnfs/:external_vnf_name/last'
-  #	Show a VNF list with last version in JSON or YAML format
-  #	@param [String] external_ns_name NS external Name
+  #	  Show a VNF list with last version in JSON or YAML format
+  #	  @param [String] external_ns_name NS external Name
   # Show a VNF name
   get '/vnfs/name/:name/last' do
     # Search and get all items of NS by name
@@ -956,10 +956,10 @@ class SonataCatalogue < Sinatra::Application
 
   # @method post_vnfs
   # @overload post '/vnfs'
-  # Post a VNF in JSON or YAML format
-  # @param [YAML] VNF in YAML format
-  # Post a VNFD
-  # @param [JSON] VNF in JSON format
+  #   Post a VNF in JSON or YAML format
+  #   @param [YAML] VNF in YAML format
+  #   Post a VNFD
+  #   @param [JSON] VNF in JSON format
   # Post a NSD
   post '/vnfs' do
     # Return if content-type is invalid
@@ -1042,12 +1042,12 @@ class SonataCatalogue < Sinatra::Application
 
   # @method update_vnfs_vendor_name_version
   # @overload put '/vnfs/vendor/:vendor/name/:name/version/:version'
-  # Update a VNF by vendor, name and version in JSON or YAML format
-  #	@param [String] VNF_vendor VNF vendor
-  # Update a VNF vendor
-  #	@param [String] VNF_name VNF Name
-  # Update a VNF name
-  #	@param [Integer] VNF_version VNF version
+  #   Update a VNF by vendor, name and version in JSON or YAML format
+  #	  @param [String] VNF_vendor VNF vendor
+  #   Update a VNF vendor
+  #	  @param [String] VNF_name VNF Name
+  #   Update a VNF name
+  #	  @param [Integer] VNF_version VNF version
   # Update a VNF version
   put '/vnfs/vendor/:vendor/name/:name/version/:version' do
     # Return if content-type is invalid
@@ -1133,8 +1133,8 @@ class SonataCatalogue < Sinatra::Application
 
   # @method update_vnfs
   # @overload put '/vnfs/id/:id'
-  #	Update a VNF by its ID in JSON or YAML format
-  #	@param [String] id VNF ID
+  #	  Update a VNF by its ID in JSON or YAML format
+  #	  @param [String] id VNF ID
   # Update a VNF
   put '/vnfs/id/:id' do
     # Return if content-type is invalid
@@ -1220,12 +1220,12 @@ class SonataCatalogue < Sinatra::Application
 
   # @method delete_vnfd_sdk_vnf_id
   # @overload delete '/vnfs/vendor/:vendor/name/:name/version/:version'
-  #	Delete a VNF by vendor, name and version in JSON or YAML format
-  #	@param [String] vnf_vendor VNF vendor
-  # Delete a VNF by group
-  #	@param [String] vnf_name VNF Name
-  # Delete a VNF by name
-  #	@param [Integer] vnf_version VNF version
+  #	  Delete a VNF by vendor, name and version in JSON or YAML format
+  #	  @param [String] vnf_vendor VNF vendor
+  #   Delete a VNF by group
+  #	  @param [String] vnf_name VNF Name
+  #   Delete a VNF by name
+  #	  @param [Integer] vnf_version VNF version
   # Delete a VNF by version
   delete '/vnfs/vendor/:vendor/name/:name/version/:version' do
     begin
@@ -1239,8 +1239,8 @@ class SonataCatalogue < Sinatra::Application
 
   # @method delete_vnfd_sdk_vnf_id
   # @overload delete '/vnfs/id/:id'
-  #	Delete a VNF by its ID
-  #	@param [String] id VNF ID
+  #	  Delete a VNF by its ID
+  #	  @param [String] id VNF ID
   # Delete a VNF
   delete '/vnfs/id/:id' do
     begin
