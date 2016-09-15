@@ -1,5 +1,5 @@
 sdk-catalogue:
-  image: sonatanfv/son-sdk-catalogue
+  image: registry.sonata-nfv.eu:5000/sdk-catalogue
   links:
    - mongo
   ports:
@@ -7,7 +7,7 @@ sdk-catalogue:
   restart: always
 
 sdk-catalogue_doc:
-  image: sonatanfv/son-sdk-catalogue
+  image: registry.sonata-nfv.eu:5000/sdk-catalogue
   ports:
     - "8809:8808"
   command: [rake,yard]
