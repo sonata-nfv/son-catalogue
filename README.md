@@ -1,5 +1,10 @@
 [![Build Status](http://jenkins.sonata-nfv.eu/buildStatus/icon?job=son-sdk-catalogue)](http://jenkins.sonata-nfv.eu/job/son-sdk-catalogue)
 
+# Attention: 
+```diff
+- SDK Catalogues will end its support on October 31th, milestone Y2B!!! For more information, please check "Issues" section.
+```
+
 # SDK Catalogues
 This repository contains the development for the SDK catalogues. It holds the API implementation of SDK catalogues for services and functions. Moreover, it is closely related to the [son-catalogue-repos](https://github.com/sonata-nfv/son-catalogue-repos) repository that holds the catalogues of the SONATA Service Platform as well at the [son-schema](https://github.com/sonata-nfv/son-schema) repository that holds the schema for the various descriptors, such as the VNFD and the NSD.
 
