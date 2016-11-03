@@ -2,7 +2,9 @@
 
 # Attention: 
 ```diff
-- SDK Catalogues will end its support on October 31th, milestone Y2B!!! For more information, please check "Issues" section.
+- SDK Catalogues is no longer supported!!! 
+On October 31th, milestone Y2B, SDK Catalogue was removed as a component from the Sonata SDK.
+For more information, please check "Issues" section.
 ```
 
 # SDK Catalogues
